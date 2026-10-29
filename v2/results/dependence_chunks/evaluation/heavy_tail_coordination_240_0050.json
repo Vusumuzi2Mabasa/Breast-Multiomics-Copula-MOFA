@@ -1,0 +1,8 @@
+{
+  "scenario": "heavy_tail_coordination",
+  "n": 240,
+  "start": 50,
+  "end": 75,
+  "errors": [],
+  "sha256": "4c2b82c9703bd68942bc9f651e87ba8754c7e1c4468fe134020e8a72a6576cc5"
+}

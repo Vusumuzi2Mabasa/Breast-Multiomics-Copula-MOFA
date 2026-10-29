@@ -1,0 +1,7 @@
+{
+  "reason": "Source review confirmed that changing the MOFA training seed alone can reuse a deterministic PCA initialization. This does not establish distinct starts.",
+  "correction": "Use the official PCA start and a second PCA start perturbed by independent N(0, 0.25^2) noise in the variational factor means. Update the node expectations before training. Record initialization hashes and select starts using training ELBO only.",
+  "scope": "Restart every integration evaluation replicate uniformly with identical generated participants and seeds. Preserve completed provisional PCA-seeded records and source snapshots under v2/provisional_pca. Dependence experiments are unchanged.",
+  "active_lock": "integration_lock_r2.json",
+  "policy": "No selection based on subtype test performance. Do not pool provisional fits into the final comparison."
+}

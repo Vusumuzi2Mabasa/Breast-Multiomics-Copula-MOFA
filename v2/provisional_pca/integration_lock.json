@@ -1,0 +1,14 @@
+{
+  "frozen_utc": "2026-10-29T18:15:27.634970+00:00",
+  "sources": {
+    "v2/src/biology.py": "1d0f98e1112fcb75e290831b4a1fa0361ae8f66eedb069543d1f121cd7f2f446",
+    "v2/src/factors.py": "aed86c3e53a6854708d53f1319007cd4568fb08a8a1643b4b3c638359e140e3f",
+    "v2/src/integration.py": "c5da905b51531e4d6ee7362be8e6055a28eb7ae6f6bbb50fad61ba5f4962bb09",
+    "v2/src/run_integration.py": "3cf136d70a735588395f7bb6afc1333d6578ab504804c5daa0d2af8d2c49bdab",
+    "v2/protocol/design.json": "39b4605785f615a3622d018b7d7da3198aace10d875fd2071d9d3c488817a582",
+    "v2/protocol/integration_amendment.json": "8736b8d6bbf459cc2e66ede20a331151e57d4150b43d3ec50113786509caebfb",
+    "src/models.py": "51ca07d07a724be697295476efdd6682bc9b70b807a2fd1af2fe31e173983170",
+    "src/benchmark.py": "4d5e46ec9ad45282902fead7c99bb9da88549b97ff624db39930b4b577183af8",
+    "src/metrics.py": "fdb7afe76f1e9bcb523451238fe8daaefb038a608c3bf17c8b8ed62d8498d776"
+  }
+}

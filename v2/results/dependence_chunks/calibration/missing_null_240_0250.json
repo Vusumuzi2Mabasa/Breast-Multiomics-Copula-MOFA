@@ -1,0 +1,8 @@
+{
+  "scenario": "missing_null",
+  "n": 240,
+  "start": 250,
+  "end": 275,
+  "errors": [],
+  "sha256": "184647febb83ef18d3dc4ea6886052d458f11d462a6231e93af17f2aa75569db"
+}

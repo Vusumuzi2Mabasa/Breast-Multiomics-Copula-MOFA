@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "preserved_v1_files": 1519,
+  "dependence_chunks": 432,
+  "calibration_datasets": 5000,
+  "evaluation_datasets": 5800,
+  "integration_replicates": 96,
+  "diablo_replicates": 96,
+  "word_pages": 14
+}

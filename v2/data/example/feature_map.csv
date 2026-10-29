@@ -1,0 +1,17 @@
+gene,module,RNA,protein,cis_variant,somatic_feature,generating_coordination_beta
+SIM_GENE_01,MODULE_1,RNA_01,protein_01,germline_01,somatic_01,0.35
+SIM_GENE_02,MODULE_1,RNA_02,protein_02,germline_02,somatic_02,0.35
+SIM_GENE_03,MODULE_1,RNA_03,protein_03,germline_03,somatic_03,0.35
+SIM_GENE_04,MODULE_1,RNA_04,protein_04,germline_04,somatic_04,0.35
+SIM_GENE_05,MODULE_2,RNA_05,protein_05,germline_05,somatic_05,0.0
+SIM_GENE_06,MODULE_2,RNA_06,protein_06,germline_06,somatic_06,0.0
+SIM_GENE_07,MODULE_2,RNA_07,protein_07,germline_07,somatic_07,0.0
+SIM_GENE_08,MODULE_2,RNA_08,protein_08,germline_08,somatic_08,0.0
+SIM_GENE_09,MODULE_3,RNA_09,protein_09,germline_01,somatic_01,0.0
+SIM_GENE_10,MODULE_3,RNA_10,protein_10,germline_02,somatic_02,0.0
+SIM_GENE_11,MODULE_3,RNA_11,protein_11,germline_03,somatic_03,0.0
+SIM_GENE_12,MODULE_3,RNA_12,protein_12,germline_04,somatic_04,0.0
+SIM_GENE_13,MODULE_4,RNA_13,protein_13,germline_05,somatic_05,0.0
+SIM_GENE_14,MODULE_4,RNA_14,protein_14,germline_06,somatic_06,0.0
+SIM_GENE_15,MODULE_4,RNA_15,protein_15,germline_07,somatic_07,0.0
+SIM_GENE_16,MODULE_4,RNA_16,protein_16,germline_08,somatic_08,0.0

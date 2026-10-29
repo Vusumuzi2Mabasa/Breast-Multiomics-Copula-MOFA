@@ -1,242 +1,273 @@
-# Copula and MOFA Integration of Simulated Blood Multiomics
+# Cross Omics Coordination and Integration in Simulated Breast Cancer
 
 **Vusumuzi Mabasa**
 
-**Simulation study.** All molecular measurements, participants, countries and subtype labels are synthetic. No TACA, Clin-MAP, patient or controlled-access data were used. This repository evaluates methods for a proposed blood-based breast cancer multi-omics study; it does not report biomarkers or results from that study.
+**Simulation study.** All participants, genomic features, gene modules, measurements, countries and TNBC labels are synthetic. No patient, TACA, Clin-MAP or controlled-access data were used. The work supports methodological planning for Study 3 of a proposed blood-based breast cancer PhD; it does not identify clinical biomarkers or tumour mechanisms.
 
-[Word report](report/Copula_MOFA_Simulation_Report.docx) · [Quarto manuscript](report/manuscript.qmd) · [Numerical results](results/summary.csv) · [Small synthetic dataset](data/example) · [Workflow](workflow.txt)
+[Word report](v2/report/Study3_Coordination_Report_v2.docx) · [Quarto manuscript](v2/report/manuscript.qmd) · [Small synthetic example](v2/data/example) · [Study 3 protocol](v2/protocol/design.json) · [Complete workflow](workflow.txt) · [Preserved original study](baseline/README_v1.md)
 
 <!-- manuscript -->
 ## Abstract
 
-Integration of blood-derived genomic, transcriptomic and proteomic measurements requires methods that accommodate different measurement scales without mistaking shared technical variation for biology. We compared an extended-rank-likelihood Gaussian copula factor model with the official MOFA+ engine, a Gaussian MOFA+ sensitivity analysis and rank PCA. The benchmark comprised 360 independently generated training cohorts, each paired with 200 independent test participants, across six mechanisms and two training sizes. Each panel contained 48 features. A separate, prospectively strengthened experiment used 10,000 calibration and 8,000 fresh evaluation datasets to assess a prespecified RNA–protein dependence test; the initial smaller calibration experiment was preserved. Across the five scenarios containing subtype mean signals, the unweighted mean paired ROC-AUC difference between copula integration and mixed-likelihood MOFA+ was +0.003; this aggregate is descriptive and does not establish superiority. The analysis separates factor recovery, subtype prediction and detection of altered dependence. The small panels and synthetic mechanisms support methodological assessment rather than clinical inference.
+Matched blood-derived genomic, transcriptomic and proteomic profiles offer opportunities to investigate molecular coordination as well as abundance. We evaluated a covariate-adjusted Gaussian copula score test for subtype-specific RNA–protein coordination using biologically structured synthetic gene modules. The dependence experiment comprised 5,000 calibration and 5,800 fresh evaluation cohorts, with training-independent family thresholds, simple adjusted-correlation benchmarks and latent-margin oracles. A distinct integration experiment used 96 independent replicates to compare tuned MOFA+, rank-transformed MOFA+, matched-prior Gaussian and copula factor samplers, rank PCA and an official supervised DIABLO analysis. Independent test participants included a synthetic country excluded from training. At N = 240, moderate coordination detection was 65.0% for the conditional copula and 23.5% for adjusted product regression; corresponding N = 480 values were 99.5% and 84.5%. Realised copula null module rejection ranged from 2.0% to 7.0% across the included null settings and sizes. Simpler adjusted correlation tests exceeded the copula in some settings. The experiment distinguishes detection of altered coordination from subtype prediction and latent programme recovery. It supports further evaluation of targeted dependence analysis alongside established integration, without claiming universal superiority, causal regulation or clinical validation.
 
 ## Introduction
 
-Patient-matched genomic, RNA and protein data can reveal molecular programmes that are difficult to identify within one assay. In blood-based breast cancer studies, these programmes may reflect immune composition, host response, technical processing or disease-associated biology. Integrating measurements from the same participant does not establish tumour origin or a causal sequence from genomic variation to protein abundance.
+Study 3 of the proposed PhD concerns matched genomic, RNA and protein measurements in blood from breast cancer cases, comparing TNBC with non-TNBC disease. A useful integration framework should identify reproducible molecular programmes while distinguishing disease-associated coordination from technical variation and differences in individual abundance. Blood-derived signals can reflect immune composition, host response, treatment or assay processing; matching participants does not establish tumour origin or a causal molecular chain.
 
-MOFA+ represents shared and view-specific variation through latent factors and supports Gaussian, Bernoulli and Poisson observation models [1]. Copula factor models provide an alternative by separating marginal distributions from dependence [2,3]. This separation may be useful for skewed abundance measurements and mixed discrete/continuous data. It does not guarantee better recovery or prediction, and a Gaussian copula does not represent arbitrary nonlinear or asymmetric tail dependence.
+The original repository benchmark found a small average prediction gain for its copula pipeline, approximately 0.003 ROC AUC. Those results remain preserved. They motivate a distinct experiment with a different primary hypothesis: whether RNA–protein dependence changes by subtype after adjustment for measured genomic and clinical features. Improved classification is not required for such a relationship to be scientifically interesting.
 
-We asked whether a manageable copula integration pipeline improves recovery of known molecular programmes and held-out subtype prediction relative to established factor integration. We also examined a distinct hypothesis: whether a prespecified RNA–protein relationship changes between simulated subtypes even when their univariate distributions remain unchanged. These questions correspond to different estimands and are evaluated separately.
+MOFA+ is an established unsupervised approach to shared and modality-specific molecular variation [1]. DIABLO is a supervised multiblock signature method [2]. Neither is automatically a hypothesis test of conditional dependence. Copula models separate marginal distributions from dependence [3,4], providing a framework for that additional question. The present work therefore keeps programme discovery, supervised prediction and differential coordination as related but separate tasks.
 
 ## Methods
 
-### Design and measurement structure
+### Experimental structure and prospective controls
 
-The numerical design and source hashes were frozen before evaluation in [the protocol](protocol/design.json) and [source lock](protocol/source_lock.json). Each of six settings was evaluated at training sizes 180 and 360 with 30 independent replicates per cell. Every replicate had a separate test cohort of 200 participants. Thus 360 training/test pairs contributed 2,160 method records; methods within a pair used identical participants and outcomes. Pilot and unit-test seeds were separate from evaluation seeds.
+The original study was preserved at commit `c56089d384bc3b447c2d6f4601c8ccdf5cd1e28c`. Original scientific sources, results, figures and the 13-page Word report remain in place. Archived copies of the original README, workflow and manifest are in [baseline](baseline). New sources and outputs are confined to [v2](v2), with versioned source locks.
 
-Four matched views contained six germline dosages, six somatic indicators, 24 RNA measurements and 12 proteins. The two genomic views were retained separately. Germline dosages used binomial quantile thresholds with minor-allele frequencies 0.12–0.40, and somatic prevalences ranged from 0.04 to 0.20. These are illustrative marginal frequencies; the panels do not reproduce empirical African linkage disequilibrium, tumour evolution or a clinical sequencing assay.
+The primary dependence experiment evaluated six statistics at N = 240 and 480. Five complete-null mechanisms each supplied 500 independent calibration cohorts per N. Separate evaluation used 300 cohorts per null mechanism, 200 per alternative and 200 per out-of-bank stress mechanism. Calibration thresholds were frozen before evaluation. The integration experiment comprised four mechanisms, two training sizes and 12 independent replicates per cell. Each replicate had a 240-participant independent test set from represented countries and a separate 120-participant test set from a synthetic country excluded from training.
 
-Three latent programmes generated the dependence backbone, comprising two stronger molecular programmes and one weaker shared programme:
+Table 1. Independent simulation components. Different methods within a replicate share participants and outcomes.
 
-$$
-H_i\sim N_3(0,I_3),\qquad
-Z_{ij}=\frac{\lambda_j^T H_i+\epsilon_{ij}}{\sqrt{1+\|\lambda_j\|^2}},\qquad
-\epsilon_{ij}\sim N(0,1).
-$$
+| Component | Design | Independent replicates |
+| --- | --- | --- |
+| Dependence calibration | 5 null mechanisms × 2 sizes × 500 | 5,000 cohorts |
+| Dependence evaluation | 5 null × 300; 5 alternatives × 200; 2 stress × 200; each at 2 sizes | 5,800 cohorts |
+| Integration | 4 mechanisms × 2 sizes × 12 | 96 training and two-test-set replicates |
+| Supervised DIABLO | Same 96 integration replicates; internal threefold validation | 96 fitted workflows |
 
-The first two loadings alternated across features, with selected opposing signs. The weaker third loading was 0.25 throughout. Under the regular mechanism, RNA and protein were affine Gaussian measurements. Under the skewed mechanism, RNA counts followed negative-binomial margins with dispersion parameter 8 and means spanning approximately 20–400 before library scaling. Library sizes were lognormal around 20 million. RNA was represented by log2(CPM+1), and lognormal protein abundance by its log2 value. This reduced panel is not a whole-transcriptome count matrix; its known simulated library size is used rather than estimating a library size by summing the retained genes.
+### Biologically structured measurements
 
-Mixed observations were generated by the quantile construction $Y_{ij}=F_j^{-1}(U_{ij})$, with $U_{ij}=\Phi(Z_{ij})$ under Gaussian dependence and the appropriate t-distribution CDF under the heavy-tail mechanism. For an RNA count with mean $\mu$, the specified negative-binomial variance was $\mu+\mu^2/8$.
+Each panel contained eight germline dosages, eight somatic indicators, 16 RNA measurements and 16 matched protein measurements. Four prespecified synthetic modules contained four gene–protein pairs each. Germline dosages were generated in four two-variant latent Gaussian blocks, with country-dependent allele frequencies. This supplies illustrative LD and frequency variation, not an empirical African reference panel. Somatic indicators were generated separately and could be associated with subtype in abundance-change settings.
 
-The technical mechanism added blood-cell composition, country and batch shifts to RNA and protein. Five unnamed synthetic countries had proportions 0.35, 0.25, 0.20, 0.12 and 0.08. They represent imbalanced sampling strata, not named populations or ancestry categories. The missing-protein mechanism additionally removed values with an abundance-dependent probability:
+For gene j, the RNA and protein location functions contained its mapped germline dosage, a binary somatic alteration and prespecified clinical terms. Most genetic effects had concordant directions, with selected protein effects reversed to represent discordance. These equations define simulation truth and are not causal conclusions from observed data. Genomic classification, read processing and somatic calling were not performed.
 
-$$
-P(M_{ij}=1\mid Y_{ij})=\operatorname{expit}\{-2-0.8(Y_{ij}-\bar Y_j)\}.
-$$
-
-Here $M=1$ indicates a missing measurement. This is non-ignorable missingness; neither fitted integration model explicitly models its detection process. The heavy-tail mechanism used a common chi-square scale mixture with four degrees of freedom, creating a multivariate t dependence structure that misspecifies both fitted Gaussian dependence models.
-
-For five mechanisms, the simulated subtype followed
+Four latent module variables generated correlated RNA residual programmes:
 
 $$
-\operatorname{logit}P(T_i=1)=
--1+0.9H_{i1}+0.5H_{i2}+0.15A_i+0.12(C_i-1.4).
+H_i\sim N_4(0,I),\qquad
+Z^R_{ij}=0.45H_{i,m(j)}+\sqrt{1-0.45^2}\,e_{ij},
 $$
 
-In the dependence-only setting, $T_i\sim\mathrm{Bernoulli}(0.30)$ independently of the backbone factors. One prespecified RNA/protein latent pair instead had correlation 0 in non-TNBC and 0.65 in TNBC. Its marginal standard-normal distributions were unchanged. The resulting labels are synthetic subtype proxies, not a mechanistic model of breast cancer.
-
-### Gaussian copula factor integration
-
-For continuous margins, a copula represents a joint distribution as
+where m(j) denotes a prespecified module. Protein residuals were generated through
 
 $$
-F(y_1,\ldots,y_p)=C_R\{F_1(y_1),\ldots,F_p(y_p)\},\qquad
-C_R(u)=\Phi_p\{\Phi^{-1}(u_1),\ldots,\Phi^{-1}(u_p);R\}.
+Z^P_{ij}=\rho_{ij}Z^R_{ij}+\sqrt{1-\rho_{ij}^2}\,\xi_{ij},
+\qquad
+\rho_{ij}=\tanh\{\eta_0(X_i)+\beta_jT_i\}.
 $$
 
-Discrete margins do not identify a unique unrestricted copula. We imposed a latent Gaussian factor model and used the extended rank likelihood, preserving order constraints rather than treating tied genotypes or binary alterations as continuous ranks during fitting [2,3]:
+The baseline predictor was $\eta_0(X_i)=\operatorname{atanh}(0.2)+0.25\,\mathrm{cells}_i+0.15\,\mathrm{age}_i+0.08(C_i-1.4)$. Covariates included age, cell composition, treatment, country and batch. The genotype- and covariate-dependent subtype sampling model produced approximately one-third TNBC cases. All participants were simulated breast cancer cases; the comparison does not estimate population breast cancer susceptibility.
+
+RNA used negative-binomial quantile measurements with a known simulated whole-assay library size followed by log2(CPM+1). Optional latent-scale perturbations altered its conditional distribution. Protein was represented on a log-abundance scale. Technical settings added country and batch shifts. Missing-protein settings imposed abundance-dependent detection, creating non-ignorable missingness. The exact generator, assay library sizes and feature map are available in the source and small example data.
+
+![Structure of the synthetic gene modules](v2/figures/biological_design.png)
+
+Figure 1. Simulation relationships among distinct germline, somatic, RNA and protein views. Arrows describe the generator, not a causal interpretation of patient data. Module 1 has altered conditional RNA–protein coordination in alternatives; modules 2–4 remain unchanged.
+
+### Null mechanisms and alternatives
+
+The calibration bank included no direct subtype effect, abundance-only shifts, scale-only shifts, technical confounding and abundance shifts with missing proteins. All have generating $\beta_j=0$. Unadjusted group means can nevertheless differ because subtype sampling depends on genotype and clinical composition. This prevents a favourable result from depending solely on a clean, balanced null. Alternatives modified the first four gene–protein pairs: moderate Fisher-scale shifts $\beta=0.35$, strong shifts $\beta=0.65$, abundance plus moderate coordination, alternating positive/negative shifts, and moderate coordination with missing proteins. A Fisher-scale shift is not a constant difference in correlation: its effect depends on the baseline covariates.
+
+Heavy-tailed null and alternative mechanisms used a shared t-scale mixture with five degrees of freedom. They were excluded from calibration and retained as out-of-bank stress tests. No threshold was retuned in response to their results.
+
+### Covariate-adjusted dependence analysis
+
+Each pair's marginal adjustment included subtype, clinical and technical terms, its mapped germline dosage and somatic indicator, and prespecified subtype interactions. Twofold cross-fitting estimated location and log-residual-scale models without fitting the same observations used for the residual prediction. Within-subtype empirical normal scores supplied a semiparametric approximation to the remaining margins. Ties received midranks. Complete observed pairs were used for testing; the detection process itself was not fitted. Consequently, calibration under a specified missingness mechanism is not a general solution to non-ignorable missingness.
+
+The working conditional dependence hypothesis was
 
 $$
-Z_i=\Lambda H_i+e_i,\qquad e_i\sim N_p(0,\Psi),\qquad
-\mathcal D(Y)=\{Z:Y_{ij}<Y_{i'j}\Rightarrow Z_{ij}<Z_{i'j}\}.
+\operatorname{atanh}\{\rho_i\}=D_i^T\gamma+\beta T_i,
+\qquad H_0:\beta=0.
 $$
 
-Loadings had independent $N(0,0.5)$ priors, residual variances had inverse-gamma priors with shape 2 and scale 0.5, and factors had standard-normal priors. Proper priors regularise latent scales; reported dependence is the scale-free correlation derived from $\Lambda\Lambda^T+\Psi$. Gibbs updates sampled loadings, factors, residual variances and truncated latent observations. Alternating nonadjacent value groups were updated together to preserve strict order constraints, while observations tied at the same value shared bounds without sharing latent values. Missing observations had unconstrained latent updates.
-
-Two independent chains each used 600 burn-in iterations and 900 subsequent iterations, retaining every third draw. A maximum split Rhat of at least 1.10 across 16 fixed, rotation-invariant correlation entries triggered a prespecified rerun with three times these lengths. Flags remaining after extension were retained and reported. This limited diagnostic does not establish convergence of every posterior quantity. The implementation is project-specific Python code, not the published bfa software; its validation includes recovery of a known bivariate correlation and explicit checks of rank constraints.
-
-Prediction used a computationally inexpensive plug-in projection from the posterior mean correlation. Its top three eigenvectors defined a low-rank representation; residual variances were floored at 0.1. Empirical marginal maps were learned on training participants only. Tied categories used midpoint empirical CDF scores at projection, and missing coordinates were omitted. This projection is an approximation and is not exact posterior prediction under the rank likelihood.
-
-### MOFA and comparison methods
-
-MOFA+ was fitted with the official Python engine, mofapy2 0.7.5 [1,4]. The primary configuration used Gaussian germline dosages, Bernoulli somatic indicators and Gaussian transformed RNA/protein measurements. A sensitivity configuration used Gaussian likelihoods for all standardised views. Both used three factors, automatic relevance determination and spike-and-slab weights, with up to 500 variational iterations and the engine's medium convergence criterion. Official convergence messages were recorded. Default engine factor selection was constrained to the same initial factor budget as the copula model; the true budget was known by design and is an optimistic simplification.
-
-For a Gaussian view, the MOFA representation was $Y^{(m)}=ZW^{(m)T}+E^{(m)}$. For the somatic Bernoulli view, the observation probability was $P(Y_{ij}^{(m)}=1\mid Z,W)=\operatorname{expit}(Z_iW_j^{(m)T})$. Unlike the copula, this model specifies the observation likelihood directly rather than through latent order constraints.
-
-Continuous feature means and standard deviations were estimated from training data only. Gaussian-view missing values remained missing. New-participant MOFA scores were conditional MAP estimates using fitted loadings, Gaussian noise precisions and the Bernoulli likelihood, with a standard-normal factor prior. The same MAP convention was used for training scores. This extension is implemented in the benchmark rather than attributed to an official MOFA prediction API.
-
-Rank PCA used training empirical normal scores, with zero imputation on the normal-score scale, followed by three principal components. A covariate-only reference included age, country, blood-cell composition and batch; it is labelled `Clinical only` in raw records for compatibility. An oracle reference used the three true latent factors plus the same covariates. The oracle is a reference for accessible signal and is not a clinical method or guaranteed finite-sample upper bound.
-
-All representations entered an otherwise identical ridge logistic classifier, with prespecified scikit-learn $C=1$ and training-only standardisation. No classifier hyperparameters were selected from test outcomes. The classifier has additive effects and no interaction terms; it is therefore not designed to exploit a pure covariance change. This makes the separate dependence test necessary.
-
-### Evaluation and uncertainty
-
-Backbone factor recovery was the mean squared cosine of the principal angles between centred estimated scores and the three generating backbone factors:
+Here D includes an intercept and the clinical/technical dependence covariates. This is a working observed-pair parameterisation. Under informative protein selection or misspecified margins, its coefficient need not equal the complete-data generating coefficient. Reported detection/error classifications use the generating truth; missing-protein calibration therefore addresses a specified latent-null selection mechanism rather than proving identifiability of latent dependence in real MNAR data. With normal-score residuals u and v, the Gaussian log likelihood, up to marginal constants, is
 
 $$
-S=\frac1{3}\sum_{k=1}^3\cos^2(\theta_k).
+\ell_i=-\tfrac12\log(1-\rho_i^2)
+-\frac{u_i^2+v_i^2-2\rho_iu_iv_i}{2(1-\rho_i^2)}.
 $$
 
-This score is invariant to factor sign, permutation and rotation. Missing estimated dimensions contribute zero, and the denominator remains the three generating dimensions. Independent R checking identified a pre-release implementation issue in the original raw score, which averaged only over numerically retained dimensions. The primary [evaluation table](results/evaluation.csv) corrects this using stored model scores; [the correction table](results/recovery_correction.csv) preserves both quantities and estimated ranks. Raw replicate records, fitted models and all prediction results are unchanged. The [metric correction](protocol/metric_correction.json) documents this amendment. A secondary descriptive measure applies the same calculation to the first two, subtype-predictive backbone factors; it measures capture of that target subspace rather than complete recovery of all three factors. In the dependence-only setting, the backbone factors are not subtype predictors. Independent test outcomes were evaluated using ROC AUC, average precision and Brier score,
+The nuisance parameters were fitted under the null by bounded numerical optimisation with an analytic gradient. The Fisher-scale score contribution was
 
 $$
-\mathrm{Brier}=\frac1{n_{test}}\sum_i(\widehat p_i-T_i)^2.
+s_i=\rho_i+
+\frac{(1+\rho_i^2)u_iv_i-\rho_i(u_i^2+v_i^2)}{1-\rho_i^2}.
 $$
 
-Paired differences were calculated within each replicate. Percentile intervals used 2,000 paired bootstrap resamples of the 30 replicate differences. Plot error bars for mean performance use 1.96 times the Monte Carlo standard error across independent replicates. These are descriptive simulation intervals, not multiplicity-adjusted clinical evidence. Failures and diagnostic flags are reported separately.
-
-### Prespecified dependence test
-
-A companion experiment generated one RNA/protein pair with negative-binomial RNA counts and log-protein measurements. Subtype affected the pair's correlation only. Pearson correlation on transformed abundance and correlation after empirical normal scoring were compared using the absolute Fisher-z difference:
+The subtype indicator was residualised against D using weights $w_i=1+\rho_i^2$. The studentised efficient-score statistic was
 
 $$
-Q=\frac{|\operatorname{atanh}(r_1)-\operatorname{atanh}(r_0)|}
-{\sqrt{1/(n_1-3)+1/(n_0-3)}}.
+Z_\beta=\frac{\sum_i\widetilde T_i s_i}
+{\sqrt{\sum_i(\widetilde T_i s_i)^2}},\qquad Q=Z_\beta^2.
 $$
 
-Rather than relying on a normal approximation, the initial experiment used 500 independent null calibration datasets per method and sample size, with the 476th ascending statistic as a strict threshold. Its realised null rejection rate reached 8.0% for the rank-normal statistic at N = 180. All initial results remain available in [the initial summary](results/dependence_initial_summary.csv). An averaged rank guarantee does not guarantee a 5% conditional rejection probability for every realised calibration bank.
+Its reference distribution was established empirically, rather than assumed to be an exact finite-sample chi-square distribution. Estimated margins, working dependence assumptions and complete-pair selection remain important qualifications.
 
-A [prospective uniform extension](protocol/dependence_validation.json), frozen before its own simulations, increased calibration to 5,000 datasets per sample size and evaluated 1,000 fresh datasets at each correlation difference 0, 0.25, 0.40 and 0.65. Both statistics and both sample sizes received the same extension. Its strict threshold was the 4,751st ascending statistic, giving an averaged exchangeability bound of $250/5001\approx0.0500$. No subsequent threshold tuning was performed using validation outcomes. Wilson intervals describe evaluation-binomial uncertainty conditional on the realised calibration bank; they do not include all calibration-bank uncertainty. This is a targeted pair test without feature search, not a test of causal regulation or an output of the factor model.
+Five comparators were evaluated on the same datasets: adjusted Pearson correlation differences; adjusted Spearman differences; normal-score correlation differences using the same location/scale preparation; HC3-adjusted product regression; and an oracle score test given the unobserved generating RNA/protein residuals. Product regression included clinical terms and quadratic age/cell terms. It is a serious conditional-moment benchmark, but its functional form differs from the copula model. The oracle is unavailable in real data and is not a guaranteed upper bound under selection or misspecification.
+
+### Multiplicity and calibration
+
+The primary module statistic was the sum of Q over a module's four pairs. Calibration used the maximum statistic across the four modules. A secondary gene family used the maximum Q across 16 pairs. For each method, N and null mechanism, the strict cutoff was the 476th ascending value among 500 family maxima; the released cutoff was the largest across the five null banks. Under exchangeability with an included complete-null bank, the averaged rejection bound is $25/501\approx0.0499$.
+
+This bound averages over calibration-bank randomness. It does not force every realised bank to have exactly 5% conditional error, establish strong family-wise control for arbitrary mixed alternatives or guarantee calibration in new clinical data. False discoveries among unchanged modules and genes were evaluated explicitly in the alternatives. The gene and module families are separate analyses; there is no joint 5% guarantee across both families and no general FDR claim.
+
+Wilson intervals describe evaluation uncertainty conditional on the realised bank. Selected method contrasts additionally used 250 paired bootstrap resamples of both calibration cohorts and evaluation cohorts, recomputing the family cutoff each time. Bootstrap intervals can be degenerate at complete detection or no detection; they are descriptive rather than evidence of equivalence.
+
+### Fairer integration and supervised benchmarks
+
+Integration used all four molecular views. Technical adjustment excluded subtype labels, preserving the separation between unsupervised discovery and supervised inference. Transformation parameters were learned from training participants only. MOFA+ used its official Python engine [1,5], with mixed Gaussian/Bernoulli likelihoods for standard inputs and Gaussian likelihoods for rank-transformed inputs.
+
+For a Gaussian MOFA view, $Y^{(m)}=ZW^{(m)T}+E^{(m)}$; the Bernoulli view uses $P(Y_{ij}^{(m)}=1)=\operatorname{expit}(Z_iW_j^{(m)T})$. MOFA's relevance and sparsity priors are distinct from the matched-sampler priors below, so its comparison remains a workflow comparison.
+
+Factor budgets 2, 4, 6 and 10 were evaluated by training-only masked RNA/protein reconstruction. Fifteen percent of observed RNA/protein training entries were masked; marginal preprocessing for this stage excluded those entries. Starting states were selected by training ELBO. The selected budget was refitted on the full training data. The initial pilot selected the boundary of the smaller grid, prompting the uniform prospective [factor-grid amendment](v2/protocol/integration_amendment.json).
+
+Source inspection also showed that seed-only reruns can share MOFA's deterministic PCA start. The final comparison therefore used an official PCA start and a distinct PCA start perturbed with fixed-scale Gaussian noise in the variational factor means, with expectations refreshed before training. Initialization hashes document this distinction. The official engine performed subsequent inference. The 14 completed provisional seeded-PCA fits were retained in [the provisional archive](v2/provisional_pca), excluded from final evaluation, and replaced uniformly according to [the initialization amendment](v2/protocol/initialization_amendment.json).
+
+Two additional factor samplers isolated an important source of unfairness: they used identical Gaussian loading priors, inverse-gamma residual-variance priors, factor budgets, sampling lengths and diagnostic rules, differing in Gaussian observations versus a Gaussian-copula extended rank likelihood [3,4]. The factor budget matched the raw MOFA selection. Each used two chains, 600 burn-in and 900 subsequent iterations, thinning by three. A monitored split Rhat of at least 1.10 triggered one threefold-length extension. Flags were retained, not used to select favourable datasets.
+
+Their common factor model was $L_i=\Lambda H_i+\epsilon_i$, with $H_i\sim N_K(0,I)$, $\epsilon_i\sim N(0,\operatorname{diag}\psi)$, $\Lambda_{jk}\sim N(0,0.5)$ and $\psi_j\sim\operatorname{InvGamma}(2,0.5)$ in the shape/scale parameterisation. In the Gaussian arm, L is the standardised observed matrix. In the copula arm, L is latent and constrained by the observed feature orders, including tied discrete genomic observations. Both update the same factor-model blocks, with the latter additionally updating the rank-constrained latent observations.
+
+Rank PCA and a covariate-only classifier provided simpler references. The true generating module factors were an oracle for programme capture, not an oracle classifier: subtype also changes measurements through mechanisms outside those factors. All practical representations entered the same prespecified ridge logistic classifier. Scores were projected for new participants using fixed fitted quantities. Copula projection used empirical marginal maps and a plug-in latent correlation, which remains an approximation.
+
+Full module capture was measured by
+
+$$
+S=\frac1{4}\|Q_{\widehat H}^TQ_H\|_F^2,
+$$
+
+with absent estimated dimensions contributing zero. Cross-omics prediction withheld the complete protein view from score inference for both training and test participants, then predicted observed standardised protein values using a common ridge procedure. A covariate-only protein reference used the same train-fitted adjustment and scaling. Missing test proteins were not treated as known targets; this evaluation does not establish accuracy for unobserved MNAR values.
+
+DIABLO was fitted through official R mixOmics [2], with the four molecular blocks and an additional covariate block. Threefold internal validation selected one or two components and four or eight retained features per block, subject to availability. Imputation and technical adjustment were repeated inside the training folds. Official weighted-centroid voting supplied class predictions. Balanced accuracy was reported; hard class labels were not presented as probabilistic ROC scores. Both supervised and unsupervised methods used the same independent seen- and unseen-country outcomes.
+
+Integration uncertainty used 2,000 paired bootstrap resamples across the 12 independently generated replicates per cell. These are small simulation comparisons, not multiplicity-adjusted clinical claims. The held-out fifth country is synthetic distribution-shift assessment, not external validation in an African population.
 
 ## Results
 
-### Measurement structure and recovery of molecular programmes
+### Null controls distinguish coordination from abundance
 
-The generated panels combine discrete genomic observations with continuous, transformed abundance data. Missing proteins depend on abundance and therefore challenge an ignorable-missingness analysis. The illustration uses a fixed synthetic dataset independent of the evaluation bank.
+Table 2 reports realised module-family rejection at the larger sample size. The abundance-only and scale-only controls directly test whether changes in individual distributions are mistaken for altered coordination. All methods received independently calibrated thresholds; they were not compared using unmatched nominal cutoffs.
 
-![Distributions of example synthetic measurements](figures/measurements.png)
+Table 2. Probability of any false module at N = 480. Each included null has 300 fresh evaluation cohorts; the heavy-tail stress setting has 200. No evaluation outcomes were used to change thresholds.
 
-Figure 1. One feature from each view in an independent synthetic missing-protein dataset. Protein histograms include observed values only. The regular setting uses continuous transformed-scale measurements, while the remaining settings include simulated RNA counts.
-
-Across the five mean-signal mechanisms, the unweighted mean backbone recovery was 0.610 for mixed-likelihood MOFA+ and 0.706 for the copula pipeline. Recovery assesses the complete integration-and-projection pipelines, so differences cannot be attributed solely to the choice of likelihood. Technical shifts and abundance-dependent missingness test whether the estimated factors remain aligned with the generating biological backbone.
-
-The secondary capture score for the two subtype-predictive factors was 0.857 for mixed-likelihood MOFA+ and 0.877 for the copula pipeline. Removal of a weak, non-predictive third factor can lower full-backbone recovery without materially reducing subtype prediction. Consequently, a higher three-factor score should not by itself be interpreted as better recovery of clinically relevant information.
-
-![Recovery of the generating factor subspace](figures/factor_recovery.png)
-
-Figure 2. Mean squared principal-angle recovery, with Monte Carlo error bars, from 30 replicates per cell. Higher values indicate closer agreement with the three generating backbone factors. The subtype-specific pair perturbation is outside this backbone in the dependence-only setting.
-
-### Independent subtype prediction
-
-Table 1 reports performance at the larger training size. All methods used the same independent test participants within a replicate. Oracle values quantify performance with access to the true factors, while rank PCA tests whether a simpler transformation-based representation is sufficient.
-
-Table 1. Mean independent-test ROC AUC at training N = 360 across 30 replicates.
-
-| Mechanism | MOFA+ | MOFA+ Gaussian | Copula | Rank PCA | Oracle factors |
+| Mechanism | Copula | Product | Normal scores | Spearman | Oracle |
 | --- | --- | --- | --- | --- | --- |
-| Regular | 0.719 | 0.718 | 0.721 | 0.721 | 0.737 |
-| Skewed | 0.712 | 0.713 | 0.717 | 0.715 | 0.731 |
-| Technical variation | 0.720 | 0.720 | 0.718 | 0.719 | 0.734 |
-| Missing proteins | 0.722 | 0.722 | 0.722 | 0.720 | 0.734 |
-| Heavy tails | 0.709 | 0.710 | 0.715 | 0.715 | 0.732 |
-| Dependence change only | 0.500 | 0.499 | 0.498 | 0.499 | 0.497 |
+| Baseline conditional null | 0.033 | 0.033 | 0.027 | 0.023 | 0.030 |
+| Abundance only | 0.027 | 0.023 | 0.037 | 0.013 | 0.023 |
+| Scale only | 0.060 | 0.040 | 0.050 | 0.053 | 0.023 |
+| Technical variation | 0.050 | 0.033 | 0.047 | 0.033 | 0.057 |
+| Missing proteins | 0.047 | 0.017 | 0.013 | 0.017 | 0.017 |
+| Heavy-tail stress | 0.030 | 0.035 | 0.095 | 0.075 | 0.010 |
 
-Paired contrasts isolate differences between methods from variation in the generated cohorts. A positive ROC-AUC difference favours the copula pipeline. The intervals are based on only 30 independently generated pairs per setting and should be interpreted alongside their magnitude, recovery scores and computation rather than as a ranking of universal superiority.
+Across included null cells and both sizes, the conditional copula's point estimates ranged from 2.0% to 7.0%. In particular, the missing-protein N = 240 cell had 7.0% rejection. That result remains visible and qualifies any claim of calibration. The finite-bank guarantee is averaged rather than conditional, and the evaluation intervals are important when interpreting individual cells. Neither missingness nor model misspecification should be treated as solved by these simulations.
 
-Table 2. Copula minus mixed-likelihood MOFA+ ROC-AUC difference, paired bootstrap interval and mean Brier scores at training N = 360. Lower Brier scores are preferable.
+![Null family behaviour across all methods](v2/figures/null_control.png)
 
-| Mechanism | AUC difference | 95% paired interval | MOFA+ Brier | Copula Brier |
+Figure 2. Any false module or false gene, with conditional 95% Wilson intervals. The dotted line is 5%. The heavy-tail setting is outside the calibration bank. The two families are reported separately.
+
+### Altered molecular coordination can be detected without classification gains
+
+At N = 240, moderate module detection was 65.0% with the conditional copula and 23.5% with product regression. At N = 480, detection increased to 99.5% and 84.5%. These differences concern an explicitly defined conditional-coordination target, not the power of MOFA+ or DIABLO to test that hypothesis. Strong alternatives approach a power ceiling, making the moderate and missing-data cases more informative.
+
+The advantage over product regression did not extend to all simpler tests. For moderate coordination at N = 240, adjusted Pearson detected the altered module in 89.0% of cohorts, Spearman in 85.5% and the normal-score difference in 77.5%, compared with 65.0% for the copula. All methods are shown in Figure 3 and the released tables. These results support retaining the simple adjusted-correlation benchmarks rather than selecting the copula by complexity.
+
+Table 3. Detection probability for the altered module at N = 480, with 200 independent evaluation cohorts per mechanism.
+
+| Mechanism | Copula | Product | Normal scores | Spearman | Oracle |
+| --- | --- | --- | --- | --- | --- |
+| Moderate coordination | 0.995 | 0.845 | 0.985 | 1.000 | 1.000 |
+| Strong coordination | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| Abundance and coordination | 0.985 | 0.875 | 1.000 | 0.885 | 1.000 |
+| Opposing changes | 1.000 | 1.000 | 0.985 | 1.000 | 1.000 |
+| Missing and coordination | 0.990 | 0.765 | 0.975 | 0.780 | 1.000 |
+
+![Detection of the prespecified altered module](v2/figures/module_detection.png)
+
+Figure 3. Module detection with Wilson intervals. Moderate and strong effects are Fisher-scale shifts of 0.35 and 0.65; they are not fixed changes in Pearson correlation. Opposing changes alter signs across genes within the same module.
+
+The paired contrasts resample both calibration and evaluation banks. A positive difference favours the copula score. Interpretation remains conditional on the chosen mechanisms: the copula's correlation link is correctly specified in the primary generator, whereas the product-regression benchmark uses a different conditional-mean form. The results do not establish superiority for arbitrary dependence, arbitrary marginal estimation or data-derived pathways.
+
+![Calibration-aware paired method differences](v2/figures/paired_detection.png)
+
+Figure 4. Copula minus comparator module-detection probability with 250-resample paired bootstrap intervals. Family cutoffs are recomputed within each draw. Boundary intervals may be degenerate, and contrasts are not multiplicity-adjusted evidence of general superiority.
+
+### Model selection and convergence remain part of the comparison
+
+MOFA factor budgets were selected without test outcomes or subtype-informed feature selection. Figure 5 shows the selected budgets, monitored sampler behaviour and total workflow cost. Runtime includes candidate selection and refitting, so it describes the implemented workflows rather than equal-cost microbenchmarks. Gaussian and copula Gibbs arms share priors and factor budgets; neither is automatically equivalent to MOFA's sparsity assumptions or variational approximation.
+
+Table 4. Integration diagnostics across 96 replicates per method. Flags are unresolved convergence diagnostics after the prespecified procedure. Boundary selections at K = 10 are reported rather than followed by additional outcome-driven tuning.
+
+| Method | Successful | Flags | Median seconds | K = 10 |
 | --- | --- | --- | --- | --- |
-| Regular | +0.002 | -0.002 to +0.005 | 0.186 | 0.185 |
-| Skewed | +0.005 | +0.001 to +0.009 | 0.190 | 0.189 |
-| Technical variation | -0.001 | -0.003 to +0.000 | 0.185 | 0.186 |
-| Missing proteins | +0.001 | -0.001 to +0.002 | 0.187 | 0.188 |
-| Heavy tails | +0.006 | +0.002 to +0.010 | 0.189 | 0.188 |
-| Dependence change only | -0.001 | -0.008 to +0.004 | 0.216 | 0.216 |
+| MOFA+ tuned | 96 | 0 | 31.4 | 35 |
+| MOFA+ rank tuned | 96 | 2 | 38.6 | 32 |
+| Gaussian Gibbs matched | 96 | 4 | 6.8 | 35 |
+| Copula Gibbs matched | 96 | 3 | 28.2 | 35 |
 
-![Independent test prediction across all settings](figures/prediction.png)
+![Integration tuning and computational diagnostics](v2/figures/integration_diagnostics.png)
 
-Figure 3. Mean ROC AUC and Monte Carlo error bars. The covariate-only reference includes clinical and technical covariates. Chance-level discrimination is 0.5. An additive classifier is deliberately not expected to identify the pure dependence-change mechanism.
+Figure 5. Factor-budget choices for the two MOFA configurations, monitored split Rhat and workflow runtimes. Runtime boxplots suppress outliers visually; all timings remain in the numerical tables. The monitored entries do not establish convergence of every posterior quantity.
 
-![Paired performance differences](figures/paired_auc.png)
+### Integration and prediction answer complementary questions
 
-Figure 4. Copula minus comparator ROC AUC with 2,000-resample paired percentile intervals. No adjustment for multiple contrasts was applied. The comparison is intended to reveal where differences arise, not to select favourable settings after inspection.
+The integration experiment produced 672 method records, with 0 failed fits and 9 unresolved selected-fit diagnostic flags. Table 5 compares independent-test discrimination at N = 480. Programme capture, protein-view prediction and supervised balanced accuracy provide additional perspectives: a method should not be ranked from AUC alone, nor from recovery of latent factors unrelated to subtype.
 
-### Dependence estimation and computational diagnostics
+All successful fits remain in the primary results. A separate [diagnostic sensitivity table](v2/results/diagnostic_sensitivity.csv) restricts each paired comparison to replicates where both selected-fit diagnostics passed and reports the retained sample counts. That subset can itself be selected and is not an unbiased replacement for the full bank. Unresolved sampler or variational diagnostics therefore continue to qualify the comparison.
 
-The fixed example shows the generating and estimated latent correlation patterns. Some genomic correlations are weakly informed because alteration indicators are sparse. A visually plausible correlation map alone does not establish factor recovery, posterior convergence or biological validity.
+Table 5. Mean independent-test ROC AUC at N = 480 across 12 replicates per cell.
 
-![Fixed example correlations and posterior trace](figures/dependence_example.png)
+| Mechanism | MOFA raw | MOFA ranks | Gaussian Gibbs | Copula Gibbs | Rank PCA |
+| --- | --- | --- | --- | --- | --- |
+| Abundance only | 0.904 | 0.900 | 0.905 | 0.907 | 0.905 |
+| Coordination only | 0.637 | 0.633 | 0.632 | 0.631 | 0.627 |
+| Both | 0.902 | 0.908 | 0.903 | 0.904 | 0.899 |
+| Missing and both | 0.889 | 0.891 | 0.884 | 0.883 | 0.885 |
 
-Figure 5. First regular-setting replicate at training N = 180, chosen by design order. Black lines separate germline, somatic, RNA and protein views. The trace displays one of 16 prespecified monitored correlation entries and is not a diagnostic of every model parameter.
+DIABLO is a supervised signature benchmark, with internal tuning and the same independent outcomes. Its class predictions permit balanced-accuracy comparisons but do not supply the same probability scale as the ridge classifiers. Apparent differences therefore concern complete predictive workflows, not an isolated copula-versus-supervision effect.
 
-The benchmark produced 2,160 method records with 0 failed fits. Of 360 successful copula fits, 4 required the prespecified sampling extension and 0 retained a monitored Rhat flag. Diagnostic flags are retained in the primary summaries, preventing convergence-based selection from concealing difficult settings. Successful computation is not synonymous with a validated model.
+Table 6. Mean independent-test balanced accuracy at N = 480. The covariate reference includes the same clinical and technical inputs available to the other classifiers.
 
-Table 3. Successful fits, unresolved diagnostic flags and median elapsed time. Timing includes fitting and projection and was measured during concurrent execution on the local workstation.
+| Mechanism | DIABLO | MOFA raw | Copula Gibbs | Covariates |
+| --- | --- | --- | --- | --- |
+| Abundance only | 0.816 | 0.797 | 0.795 | 0.523 |
+| Coordination only | 0.565 | 0.534 | 0.531 | 0.522 |
+| Both | 0.815 | 0.789 | 0.798 | 0.526 |
+| Missing and both | 0.790 | 0.763 | 0.761 | 0.528 |
 
-| Method | Successful fits | Diagnostic flags | Median seconds |
-| --- | --- | --- | --- |
-| MOFA+ | 360 | 0 | 1.87 |
-| MOFA+ Gaussian | 360 | 0 | 1.76 |
-| Copula | 360 | 0 | 21.37 |
+![Complementary integration endpoints](v2/figures/integration_results.png)
 
-![Chain diagnostics and computational cost](figures/diagnostics.png)
+Figure 6. Independent-test discrimination, generating-module capture, complete protein-view prediction and balanced accuracy at N = 480. Error bars are Monte Carlo intervals across 12 replicates. Protein error is evaluated on a common observed standardised scale; lower is preferable. The purely generating-factor reference is not a classifier upper bound.
 
-Figure 6. Copula maximum split Rhat across the fixed monitored entries and elapsed-time distributions. The dotted diagnostic threshold is 1.10. Runtime boxplots hide outliers for readability; all runtimes remain in the released tables.
+### Synthetic country transportability
 
-### Detecting subtype-specific coordination
+The fifth country was excluded from all integration training and model selection. Figure 7 compares independent-test AUC in that stratum with AUC in represented countries. The comparison includes changes in allele frequencies, covariate composition and country effects under the same generator. It is a useful stress test of portability, but it does not reproduce the breadth of real African population, clinical or platform differences.
 
-The companion experiment tests a dependence change without an abundance shift. Its calibration is separate from factor fitting and subtype classification. A successful dependence test can therefore coexist with chance-level performance of the additive classifier in the dependence-only benchmark.
+![Independent synthetic-country transportability](v2/figures/country_transport.png)
 
-After the larger calibration extension, fresh null rejection rates ranged from 4.3% to 5.2%. At a moderate correlation difference of 0.25, the normal-score statistic detected 33.4% of alternatives at N = 180 and 57.9% at N = 360; corresponding Pearson-log values were 33.7% and 56.7%. These similar rates do not establish a general advantage for the rank-normal statistic. The near-ceiling strong-signal results alone would have obscured the moderate-signal limitations. This comparison concerns two targeted correlation statistics, not a power comparison between fitted factor models.
-
-Table 4. Fresh evaluation of the prespecified pair test after the larger independent calibration. Each method/cell contains 1,000 evaluation datasets; parentheses contain conditional 95% Wilson intervals. The non-TNBC latent correlation is always zero.
-
-| N | TNBC latent correlation | Pearson log | Copula normal scores |
-| --- | --- | --- | --- |
-| 180 | 0 (null) | 0.044 (0.033–0.059) | 0.043 (0.032–0.057) |
-| 180 | 0.25 | 0.337 (0.308–0.367) | 0.334 (0.305–0.364) |
-| 180 | 0.40 | 0.713 (0.684–0.740) | 0.710 (0.681–0.737) |
-| 180 | 0.65 | 0.998 (0.993–0.999) | 0.998 (0.993–0.999) |
-| 360 | 0 (null) | 0.052 (0.040–0.068) | 0.047 (0.036–0.062) |
-| 360 | 0.25 | 0.567 (0.536–0.597) | 0.579 (0.548–0.609) |
-| 360 | 0.40 | 0.947 (0.931–0.959) | 0.948 (0.932–0.960) |
-| 360 | 0.65 | 1.000 (0.996–1.000) | 1.000 (0.996–1.000) |
-
-![Calibrated dependence testing](figures/dependence_test.png)
-
-Figure 7. Fresh null rejection and detection probabilities with Wilson intervals, using correlation differences 0.25, 0.40 and 0.65. The largest effect is a strong-signal feasibility benchmark. Moderate alternatives are included to avoid judging methods solely at a power ceiling.
+Figure 7. Mean unseen-minus-seen-country ROC AUC with paired bootstrap intervals for each practical integration workflow. Negative values indicate lower discrimination in the held-out stratum. The plot is descriptive, not evidence of external population validation.
 
 ## Discussion
 
-This study evaluates whether flexible dependence modelling adds value to a compact multi-omics workflow under specified, reproducible mechanisms. The appropriate interpretation is conditional: a model can recover dependence adequately without improving phenotype prediction, and a representation that predicts well need not recover the complete generating factor space. Differences between the copula and MOFA pipelines also include priors, sparsity, inference and score projection, preventing attribution of every difference to the copula alone.
+This extension makes the connection to Study 3 more specific. MOFA+ provides an established route to discovering shared molecular variation, DIABLO evaluates supervised cross-omics signatures, and the conditional copula addresses a separate question about subtype-dependent coordination. A dependence signal can therefore add scientific information without substantially increasing additive subtype-classification AUC.
 
-The Gaussian MOFA sensitivity analysis and rank PCA are important controls. When they perform similarly to a copula, normalisation and low-rank structure may explain much of the available gain. Conversely, a dependence test addresses information that an additive classifier may miss. It should be evaluated as a separate, prespecified scientific analysis rather than used to rescue a disappointing classification comparison.
+The detection gains over product regression in the specified moderate-coordination settings support further investigation of that targeted question. Higher detection by simpler adjusted correlation tests in some cells prevents a general efficiency claim for the copula. Their interpretation has limits. The dependence model has the correct link form in the main generator; alternative methods use different transformations, moments and efficiency assumptions. Matched-prior factor samplers help separate marginal/dependence modelling from prior and factor-budget differences, but the main MOFA comparisons remain comparisons of complete pipelines. Neither a favourable cell nor a strong-signal ceiling establishes a universally better method.
 
-For the proposed breast cancer Study 3, MOFA+ remains an established integration baseline. A copula analysis could complement it by examining selected cross-layer relationships, especially when continuous distributions remain non-Gaussian or dependence itself is the target. Any extension must account for actual specimen fractions, sequencing design, cell composition, treatment timing, assay batches and country imbalance. Molecular co-variation cannot establish tumour origin, causal mediation, shared causal variants or therapeutic utility.
+The negative controls are central. Abundance, heteroscedasticity, technical variation and non-ignorable protein detection can all complicate the interpretation of a coordination analysis. Independent family calibration addresses those specified simulation mechanisms; it does not certify validity for unknown missingness or incorrect covariate models in a real cohort. Realised false-positive rates, uncertainty and out-of-bank stress results remain part of the evidence, including cells exceeding the nominal point estimate.
 
-Several limitations constrain extrapolation. The feature panel is deliberately small, genomic dependence is synthetic, and the factor count is known. The model does not reproduce real African LD, full tumour mutation processes or a whole-transcriptome assay. The missingness mechanism is not explicitly fitted. Rank likelihood reduces sensitivity to monotone marginal transformations but does not solve confounding or non-ignorable missingness. A Gaussian copula is misspecified for the heavy-tail dependence mechanism. The plug-in projection may discard posterior information and may disadvantage the copula relative to exact predictive inference.
+For the PhD, a defensible analysis would prespecify a limited set of gene–protein pairs or pathways independently of the confirmation data. Modules discovered using MOFA+ or DIABLO should be evaluated in held-out participants or with a procedure that accounts for their selection. The current prespecified-module benchmark does not validate testing thousands of data-derived pairs on the same participants used to select them. Cross-country effect heterogeneity remains principally a Study 2 question; the present transport experiment supplies a complementary sensitivity analysis.
 
-Thirty integration replicates per cell provide a manageable benchmark, not precise evidence of small power differences. The companion test has more replicates and several effect sizes but examines only one prespecified pair. It does not address genome-wide multiplicity. No leave-one-country-out validation, empirical reference-data validation, full posterior calibration, asymmetric copula comparison or extensive factor-number sensitivity analysis was performed. These are prospective extensions rather than completed analyses.
+Further limitations are deliberate. Only 48 molecular features were simulated. Germline LD is synthetic, somatic alterations are simplified binary inputs, and no real tumour fractions, copy-number processes or cell-deconvolution errors are represented. The observed cell-composition covariate is idealised. Genomic view availability and biological interpretation must follow the actual assay manifest, including defensible somatic classification. Blood RNA and proteins may come from different compartments; cross-layer association does not establish tumour origin or regulatory direction.
+
+Integration uses plug-in score projection, a limited factor grid and only 12 replicates per cell. The null score tests use estimated normal-score margins rather than an exact arbitrary conditional-CDF model. Sampler diagnostics monitor a restricted set of invariant quantities, not full posterior calibration. No real-data biomarker replication, mechanistic validation or clinical utility assessment was performed. These constraints define what the benchmark supports and what remains for future study.
 
 ## Conclusion
 
-Copula modelling can be tested as a complementary integration strategy for mixed blood multi-omics measurements. Its value must be judged separately for latent programme recovery, prediction and subtype-specific coordination. This benchmark provides executable evidence for those distinctions while retaining MOFA+ and simpler baselines. The simulated results do not justify replacing an established integration method solely because the alternative is more complex.
+The more relevant contribution for Study 3 is a calibrated, explicitly conditional analysis of cross-omics coordination alongside established programme discovery and supervised signature analysis. The simulation provides evidence about this defined target under structured and challenging mechanisms, while preserving simpler comparators and the original small-gain study. It supports a complementary role for copulas rather than their automatic replacement of MOFA+.
 
 ## Reproducibility
 
-The project uses Python 3.12, the official mofapy2 engine, a documented project-specific copula sampler and independent R checks of selected metrics. All evaluation records, compact synthetic fixtures, figures, calibration thresholds and validation summaries are released. Work directories, installed dependencies and document-rendering intermediates are excluded.
+The original study remains available through the archived README and commit. New data generation, calibration, evaluation, integration selection, DIABLO, validation, figures and manuscripts are implemented under `v2/src`. Scientific model sources were frozen before their evaluation phases. The factor-grid and initialization amendments are explicit, and provisional fits are not pooled with final results. Failed fits and diagnostic flags are retained in the released records.
 
 ```bash
 python -m venv .venv
@@ -244,26 +275,31 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 python -m unittest discover -s tests -v
-python src/run_all.py --workers 2
-python src/dependence_validation.py
-python src/analyse.py
-python src/validate.py
-Rscript --vanilla src/check_metrics.R .
-python src/manuscript.py
-python src/build_word.py
+python -m unittest discover -s v2/tests -v
+python v2/src/run_dependence.py --workers 2
+python v2/src/run_integration.py --workers 2
+Rscript --vanilla v2/src/diablo.R .
+python v2/src/validate.py
+Rscript --vanilla v2/src/check_conditional.R .
+python v2/src/validate_integration.py
+Rscript --vanilla v2/src/check_integration.R .
+python v2/src/analysis.py
+python v2/src/figures.py
+python v2/src/manuscript.py
+python v2/src/build_word.py
+python v2/src/audit.py --fresh
 ```
 
-On Windows, activate `.venv\Scripts\Activate.ps1` and set the three thread environment variables using PowerShell. The Toshiba run used a task-local dependency directory rather than changing global Python packages. See [workflow.txt](workflow.txt) for the complete Windows and Linux procedures. The committed source lock must be retained; `src/freeze.py` is only for a genuinely new, prospective design and refuses to overwrite an existing lock. Existing replicate JSON files are resumed rather than recomputed. Use a separate checkout/output folder for a fresh full rerun.
-
-Word generation requires Quarto; independent metric verification requires R and jsonlite. The manuscript is generated from the same result tables and prose as this README, with editable equations. No GitHub access is required to reproduce the numerical analyses. GitHub publishing instructions are included in the workflow file.
+DIABLO requires R and mixOmics; independent checks additionally use jsonlite. The tested software versions are recorded in the released metadata. Quarto renders the Word report from the shared manuscript, with editable equations. Existing simulation chunks are resumed. For a fresh run, use the supplied reproduction wrapper with a new output directory so original results are not overwritten. Windows/Toshiba commands and GitHub publication details are in [workflow.txt](workflow.txt).
 
 ## References
 
 1. Argelaguet R, et al. MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biology. 2020;21:111. [Methods paper](https://doi.org/10.1186/s13059-020-02015-1).
-2. Murray JS, Dunson DB, Carin L, Lucas JE. Bayesian Gaussian copula factor models for mixed data. Journal of the American Statistical Association. 2013;108:656–665. [Methods paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3753118/).
-3. Hoff PD. Extending the rank likelihood for semiparametric copula estimation. Annals of Applied Statistics. 2007;1:265–283. [Author manuscript](https://arxiv.org/abs/math/0610413).
-4. MOFA developers. Official implementation and installation documentation. [MOFA documentation](https://biofam.github.io/MOFA2/installation.html).
+2. Singh A, et al. DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays. Bioinformatics. 2019;35:3055–3062. [Methods paper](https://doi.org/10.1093/bioinformatics/bty1054).
+3. Murray JS, Dunson DB, Carin L, Lucas JE. Bayesian Gaussian copula factor models for mixed data. Journal of the American Statistical Association. 2013;108:656–665. [Methods paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3753118/).
+4. Hoff PD. Extending the rank likelihood for semiparametric copula estimation. Annals of Applied Statistics. 2007;1:265–283. [Author manuscript](https://arxiv.org/abs/math/0610413).
+5. MOFA developers. [Official preprocessing and interpretation guidance](https://biofam.github.io/MOFA2/faq.html).
 
 ## Data and code availability
 
-All released observations are synthetic. The repository contains no proposal document, personal contact information, clinical records, raw patient sequencing or collaborator data. The source is released under the MIT licence. Cite the repository and the original MOFA and copula-method publications when reusing the benchmark. Implementation of an existing method and its application to this simulation are not claims of methodological novelty.
+All released observations are synthetic. Sources, results and reports are available in [the public repository](https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA). No proposal documents, clinical records, private genomic data or collaborator datasets are included. Sources are released under the MIT licence. Cite this repository and the original methodological publications when reusing the benchmark. Existing-method implementation and simulation evaluation do not by themselves establish methodological novelty.

@@ -1,0 +1,8 @@
+{
+  "scenario": "scale_only",
+  "n": 240,
+  "start": 50,
+  "end": 75,
+  "errors": [],
+  "sha256": "e53b89da8cfd0915ac8bb3f87742b930597635a3b83d4ac7bd6aa2b9f74238fd"
+}

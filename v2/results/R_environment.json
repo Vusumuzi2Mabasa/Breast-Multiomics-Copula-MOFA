@@ -1,0 +1,10 @@
+{
+  "R": "4.5.1",
+  "mixOmics": {
+    "Package": "mixOmics",
+    "Version": "6.33.0",
+    "Repository": "Bioconductor 3.22",
+    "Built": "R 4.5.0; ; 2025-06-05 13:26:17 UTC; windows"
+  },
+  "jsonlite": "2.0.0"
+}

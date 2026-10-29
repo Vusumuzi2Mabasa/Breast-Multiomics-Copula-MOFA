@@ -1,0 +1,230 @@
+{
+  "status": "passed",
+  "fixtures": 56,
+  "checks": [
+    {
+      "fixture": "abundance_only_240_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_240_00_MOFA+ rank tuned",
+      "max_error": 0
+    },
+    {
+      "fixture": "abundance_only_240_00_Gaussian Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "abundance_only_240_00_Copula Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "abundance_only_240_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_240_00_Covariates only",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_240_00_Oracle factors",
+      "max_error": 2.7755575615628914e-17
+    },
+    {
+      "fixture": "abundance_only_480_00_MOFA+ tuned",
+      "max_error": 1.3877787807814457e-17
+    },
+    {
+      "fixture": "abundance_only_480_00_MOFA+ rank tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_480_00_Gaussian Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_480_00_Copula Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "abundance_only_480_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "abundance_only_480_00_Covariates only",
+      "max_error": 0
+    },
+    {
+      "fixture": "abundance_only_480_00_Oracle factors",
+      "max_error": 2.7755575615628914e-17
+    },
+    {
+      "fixture": "both_240_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_240_00_MOFA+ rank tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_240_00_Gaussian Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_240_00_Copula Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "both_240_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_240_00_Covariates only",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_240_00_Oracle factors",
+      "max_error": 2.7755575615628914e-17
+    },
+    {
+      "fixture": "both_480_00_MOFA+ tuned",
+      "max_error": 0
+    },
+    {
+      "fixture": "both_480_00_MOFA+ rank tuned",
+      "max_error": 1.3877787807814457e-17
+    },
+    {
+      "fixture": "both_480_00_Gaussian Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_480_00_Copula Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "both_480_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_480_00_Covariates only",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "both_480_00_Oracle factors",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_240_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_240_00_MOFA+ rank tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_240_00_Gaussian Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "coordination_moderate_240_00_Copula Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "coordination_moderate_240_00_Rank PCA",
+      "max_error": 5.5511151231257827e-17
+    },
+    {
+      "fixture": "coordination_moderate_240_00_Covariates only",
+      "max_error": 0
+    },
+    {
+      "fixture": "coordination_moderate_240_00_Oracle factors",
+      "max_error": 5.5511151231257827e-17
+    },
+    {
+      "fixture": "coordination_moderate_480_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_480_00_MOFA+ rank tuned",
+      "max_error": 0
+    },
+    {
+      "fixture": "coordination_moderate_480_00_Gaussian Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_480_00_Copula Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_480_00_Rank PCA",
+      "max_error": 0
+    },
+    {
+      "fixture": "coordination_moderate_480_00_Covariates only",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "coordination_moderate_480_00_Oracle factors",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_240_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_240_00_MOFA+ rank tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_240_00_Gaussian Gibbs matched",
+      "max_error": 0
+    },
+    {
+      "fixture": "missing_coordination_240_00_Copula Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_240_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_240_00_Covariates only",
+      "max_error": 0
+    },
+    {
+      "fixture": "missing_coordination_240_00_Oracle factors",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_MOFA+ tuned",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_MOFA+ rank tuned",
+      "max_error": 0
+    },
+    {
+      "fixture": "missing_coordination_480_00_Gaussian Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_Copula Gibbs matched",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_Rank PCA",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_Covariates only",
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_coordination_480_00_Oracle factors",
+      "max_error": 1.1102230246251565e-16
+    }
+  ]
+}

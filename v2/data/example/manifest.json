@@ -1,0 +1,10 @@
+{
+  "disclosure": "Entirely synthetic, independent of all evaluation and calibration seeds. Feature identifiers do not denote real genes or genomic variants.",
+  "participants": 240,
+  "seed": 901030000,
+  "scenario": "missing_coordination",
+  "protein_scale": "Natural log abundance",
+  "RNA_scale": "log2 CPM plus one",
+  "genomic_LD": "Four illustrative latent Gaussian blocks, not empirical African LD",
+  "missing_protein_fraction": 0.09505208333333333
+}

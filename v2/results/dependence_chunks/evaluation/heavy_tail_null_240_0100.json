@@ -1,0 +1,8 @@
+{
+  "scenario": "heavy_tail_null",
+  "n": 240,
+  "start": 100,
+  "end": 125,
+  "errors": [],
+  "sha256": "2bfe5bbb710fafa2cf0df8e5491eb9e5aef5808b0a221b9680bc14008f0a5c83"
+}

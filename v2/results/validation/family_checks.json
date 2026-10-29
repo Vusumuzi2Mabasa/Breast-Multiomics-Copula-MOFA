@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "n": 240,
+      "scenario": "null",
+      "cohorts": 500
+    },
+    {
+      "n": 240,
+      "scenario": "abundance_only",
+      "cohorts": 500
+    },
+    {
+      "n": 240,
+      "scenario": "scale_only",
+      "cohorts": 500
+    },
+    {
+      "n": 240,
+      "scenario": "technical_null",
+      "cohorts": 500
+    },
+    {
+      "n": 240,
+      "scenario": "missing_null",
+      "cohorts": 500
+    },
+    {
+      "n": 480,
+      "scenario": "null",
+      "cohorts": 500
+    },
+    {
+      "n": 480,
+      "scenario": "abundance_only",
+      "cohorts": 500
+    },
+    {
+      "n": 480,
+      "scenario": "scale_only",
+      "cohorts": 500
+    },
+    {
+      "n": 480,
+      "scenario": "technical_null",
+      "cohorts": 500
+    },
+    {
+      "n": 480,
+      "scenario": "missing_null",
+      "cohorts": 500
+    }
+  ]
+}

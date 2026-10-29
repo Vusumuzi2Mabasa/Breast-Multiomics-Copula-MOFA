@@ -1,0 +1,8 @@
+{
+  "training_test_pairs": 96,
+  "method_records": 672,
+  "fit_failures": 0,
+  "diagnostic_flags": 9,
+  "diablo_fits": 96,
+  "diablo_failures": 0
+}

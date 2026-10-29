@@ -1,0 +1,16 @@
+{
+  "calibration_datasets": 5000,
+  "evaluation_datasets": 5800,
+  "calibration_failures": [],
+  "evaluation_failures": [],
+  "methods": [
+    "Partial Pearson",
+    "Partial Spearman",
+    "Normal-score difference",
+    "Product regression",
+    "Conditional copula",
+    "Oracle margins"
+  ],
+  "total_method_records": 34800,
+  "threshold_sha256": "7f20552f24191931da153a7120134137b938c0390357d038bb778664988c41fd"
+}

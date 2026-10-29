@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "stages": [
+    "integration_validation",
+    "integration_R",
+    "analysis",
+    "figures",
+    "manuscript"
+  ]
+}

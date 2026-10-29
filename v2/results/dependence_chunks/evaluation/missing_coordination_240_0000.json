@@ -1,0 +1,8 @@
+{
+  "scenario": "missing_coordination",
+  "n": 240,
+  "start": 0,
+  "end": 25,
+  "errors": [],
+  "sha256": "9a7fe1d8d7ae2f0ab5f7f428097f91f10dcf4d03314c7f62e09c1b8af3935607"
+}

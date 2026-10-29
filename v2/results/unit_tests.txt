@@ -1,0 +1,15 @@
+test_abundance_is_not_coordination_truth (test_dependence.TestConditionalDependence.test_abundance_is_not_coordination_truth) ... ok
+test_analytic_gradient (test_dependence.TestConditionalDependence.test_analytic_gradient) ... ok
+test_gene_modules_and_matching (test_dependence.TestConditionalDependence.test_gene_modules_and_matching) ... ok
+test_symmetry_and_sign (test_dependence.TestConditionalDependence.test_symmetry_and_sign) ... ok
+test_distinct_official_initializations (test_factors.TestIntegration.test_distinct_official_initializations) ... ok
+test_independent_country_split (test_factors.TestIntegration.test_independent_country_split) ... ok
+test_rank_sampler_monotone_invariance (test_factors.TestIntegration.test_rank_sampler_monotone_invariance) ... ok
+test_training_preprocessing_and_binary_view (test_factors.TestIntegration.test_training_preprocessing_and_binary_view) ... ok
+test_additive_subtype_shift_removed_by_conditional_margins (test_invariance.TestBiologicalControls.test_additive_subtype_shift_removed_by_conditional_margins) ... ok
+test_genotype_coding_invariance (test_invariance.TestBiologicalControls.test_genotype_coding_invariance) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 8.137s
+
+OK

@@ -1,0 +1,8 @@
+{
+  "scenario": "opposing_coordination",
+  "n": 240,
+  "start": 50,
+  "end": 75,
+  "errors": [],
+  "sha256": "9cd0df22c5dd58d7e34229da6bdd3382ccb2be1d9514976899e541f49e2f57d6"
+}

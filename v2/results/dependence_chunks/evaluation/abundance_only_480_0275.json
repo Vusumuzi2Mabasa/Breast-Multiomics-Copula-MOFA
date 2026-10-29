@@ -1,0 +1,8 @@
+{
+  "scenario": "abundance_only",
+  "n": 480,
+  "start": 275,
+  "end": 300,
+  "errors": [],
+  "sha256": "2649b1f591ad9cce16d7071a4cd02e91b01ebf996f116963df3283dee39ce4cd"
+}

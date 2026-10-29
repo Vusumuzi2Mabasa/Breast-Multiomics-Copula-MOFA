@@ -1,0 +1,10 @@
+{
+  "frozen_utc": "2026-10-29T17:59:17.138935+00:00",
+  "sources": {
+    "src/biology.py": "1d0f98e1112fcb75e290831b4a1fa0361ae8f66eedb069543d1f121cd7f2f446",
+    "src/dependence.py": "48124cc2846c32ce74ecb403b807c5163636d53a85fc7ef861fcc0ed5a72b97b",
+    "src/run_dependence.py": "33d61aefcdc3279cbef5ea22c8093befaf301a938b9dc1caffca1664cfee67f2",
+    "tests/test_dependence.py": "e5d1b23258b077c5a1414906095838a2f64aaa197dd5f45a096bda366a19a225",
+    "protocol/design.json": "39b4605785f615a3622d018b7d7da3198aace10d875fd2071d9d3c488817a582"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "scenario": "null",
+      "n": 240,
+      "seed": 301270000,
+      "max_error": 0.0
+    },
+    {
+      "scenario": "abundance_only",
+      "n": 480,
+      "seed": 301610000,
+      "max_error": 0.0
+    },
+    {
+      "scenario": "coordination_moderate",
+      "n": 240,
+      "seed": 301770000,
+      "max_error": 0.0
+    },
+    {
+      "scenario": "missing_coordination",
+      "n": 480,
+      "seed": 302410000,
+      "max_error": 0.0
+    },
+    {
+      "scenario": "heavy_tail_null",
+      "n": 240,
+      "seed": 302270000,
+      "max_error": 0.0
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "status": "passed",
+  "fixtures": 10,
+  "checks": [
+    {
+      "scenario": "null",
+      "n": 240,
+      "gene": 0,
+      "score": -0.44763303069609728,
+      "max_absolute_error": 4.5124322050615895e-06,
+      "optim_code": 0
+    },
+    {
+      "scenario": "null",
+      "n": 240,
+      "gene": 5,
+      "score": 2.4204262344918965,
+      "max_absolute_error": 0.000360398379251059,
+      "optim_code": 0
+    },
+    {
+      "scenario": "abundance_only",
+      "n": 480,
+      "gene": 0,
+      "score": 0.7069099393567192,
+      "max_absolute_error": 4.5716582145804985e-05,
+      "optim_code": 0
+    },
+    {
+      "scenario": "abundance_only",
+      "n": 480,
+      "gene": 5,
+      "score": 2.1682055309074393,
+      "max_absolute_error": 0.00012272051350503688,
+      "optim_code": 0
+    },
+    {
+      "scenario": "coordination_moderate",
+      "n": 240,
+      "gene": 0,
+      "score": 2.1908482669094225,
+      "max_absolute_error": 9.0984317728803887e-05,
+      "optim_code": 0
+    },
+    {
+      "scenario": "coordination_moderate",
+      "n": 240,
+      "gene": 5,
+      "score": 0.054665944929254577,
+      "max_absolute_error": 3.2394789266303181e-05,
+      "optim_code": 0
+    },
+    {
+      "scenario": "missing_coordination",
+      "n": 480,
+      "gene": 0,
+      "score": 3.8414277475558567,
+      "max_absolute_error": 3.6674860409036114e-05,
+      "optim_code": 0
+    },
+    {
+      "scenario": "missing_coordination",
+      "n": 480,
+      "gene": 5,
+      "score": -1.1650758545733644,
+      "max_absolute_error": 3.0467151310720197e-06,
+      "optim_code": 0
+    },
+    {
+      "scenario": "heavy_tail_null",
+      "n": 240,
+      "gene": 0,
+      "score": 0.36163608204095438,
+      "max_absolute_error": 2.6603835331484582e-05,
+      "optim_code": 0
+    },
+    {
+      "scenario": "heavy_tail_null",
+      "n": 240,
+      "gene": 5,
+      "score": 0.15549419440604606,
+      "max_absolute_error": 1.678839727939363e-05,
+      "optim_code": 0
+    }
+  ],
+  "R_version": "4.5.1"
+}

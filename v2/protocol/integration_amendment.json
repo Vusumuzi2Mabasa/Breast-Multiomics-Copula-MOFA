@@ -1,0 +1,7 @@
+{
+  "reason": "The independent pilot selected the upper end of the initial factor grid for both MOFA configurations. Extend the candidate grid uniformly before integration evaluation so the comparison is not restricted to a boundary solution.",
+  "factor_grid": [2, 4, 6, 10],
+  "scope": "All integration methods and scenarios; matched Gibbs/PCA budgets follow raw MOFA's selected K. No changes to dependence calibration, source, thresholds or seeds.",
+  "pilot": "both, N=240, seed 101270000; excluded from evaluation",
+  "policy": "No further factor-grid changes based on evaluation performance. Report selected factor counts and any boundary selections."
+}

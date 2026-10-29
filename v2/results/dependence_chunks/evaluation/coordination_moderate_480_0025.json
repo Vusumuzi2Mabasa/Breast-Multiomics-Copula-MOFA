@@ -1,0 +1,8 @@
+{
+  "scenario": "coordination_moderate",
+  "n": 480,
+  "start": 25,
+  "end": 50,
+  "errors": [],
+  "sha256": "b77d8b39ba1842b0443fc61781d64482257f381e11e085afbd94991efb95264c"
+}

@@ -1,0 +1,680 @@
+{
+  "status": "passed",
+  "replicates": 96,
+  "full_replays": 1,
+  "max_replay_error": 0.0,
+  "checks": [
+    {
+      "fixture": "abundance_only_240_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_240_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "abundance_only_480_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_240_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "both_480_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_240_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "coordination_moderate_480_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_240_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_00",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_01",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_02",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_03",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_04",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_05",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_06",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_07",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_08",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_09",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_10",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    },
+    {
+      "fixture": "missing_coordination_480_11",
+      "metrics": "passed",
+      "initializations": "distinct",
+      "factor_budget": "matched",
+      "diablo": "passed"
+    }
+  ]
+}

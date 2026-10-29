@@ -1,0 +1,12 @@
+{
+  "primary_family": "Four prespecified synthetic modules, each containing four matched RNA/protein pairs",
+  "primary_metric": "Detection probability of altered module 1, plus any false module",
+  "secondary_family": "Sixteen prespecified gene/protein pairs, reported separately from the module family",
+  "intervals": "Wilson 95% intervals conditional on the realised calibration bank; paired bootstrap with independent resampling of each calibration bank and evaluation cohorts for selected method contrasts",
+  "bootstrap_replicates": 250,
+  "bootstrap_seed": 501030000,
+  "integration_intervals": "Paired percentile bootstrap over independent training/test pairs, 2000 resamples; descriptive with 12 replicates per cell",
+  "protein_reference": "Also calculate the covariate-only protein prediction baseline from exported original training/test matrices using the same train-fitted preprocessing and ridge protocol; no molecular model fitting or selection uses this reference.",
+  "diagnostic_sensitivity": "Retain every successful fit in primary results. Also report paired contrasts restricted to replicates where both selected method diagnostics pass, with sample counts. This diagnostic-based subset is a sensitivity analysis, not a replacement or evidence of unbiased selection.",
+  "no_claims": ["No general FDR claim", "No joint 5% guarantee across the gene and module families", "No causal regulation claim", "No clinical validation", "No universal superiority from selected contrasts"]
+}
