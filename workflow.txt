@@ -92,6 +92,7 @@ and release audit rather than rerunning the full benchmark.
 7. INDIVIDUAL STAGES AND RESUME
 python -m unittest discover -s tests -v
 python src/run_all.py --workers 2
+python src/dependence_validation.py
 python src/analyse.py
 python src/validate.py
 Rscript --vanilla src/check_metrics.R .
@@ -111,6 +112,13 @@ null and 500 fresh alternative datasets evaluate it. Two statistics use identica
 datasets. There is one prespecified pair and no discovery-based feature search.
 Thresholds use ascending rank 476/500; averaged null bound is 25/501.
 The test is separate from factor fitting and does not establish causality.
+The initial N=180 rank-normal statistic had an 8% fresh null rejection rate.
+Its results and calibration bank are preserved. A prospective uniform extension
+in protocol/dependence_validation.json increases calibration to 5000 per N and
+uses fresh 1000-dataset evaluation banks for rho=0, 0.25, 0.40 and 0.65.
+The strict rank is 4751/5000 and averaged null bound is 250/5001. These fresh
+results are primary; results/dependence retains the initial experiment.
+Run: python src/dependence_validation.py
 
 9. WORD REPORT AND VISUAL QA
 src/build_word.py creates report/manuscript.qmd from the README manuscript text,
@@ -123,6 +131,13 @@ and PDF intermediates are internal QA and are not repository deliverables.
 10. INTERPRETATION
 Compare factor recovery, prediction and dependence testing separately.
 Report paired differences with uncertainty, computational costs and diagnostics.
+The primary recovery metric is dimension-aware: absent estimated dimensions
+contribute zero and the denominator remains three. Pre-release independent R
+checking detected an optimistic legacy metric in the raw replicate records.
+The original records are preserved; src/analyse.py applies src/metrics.py and
+records the full amendment in results/recovery_correction.csv. Use
+results/evaluation.csv for primary recovery results. Simulation and prediction
+outputs were not changed. See protocol/metric_correction.json.
 The oracle is a simulated reference, not a practical method or guaranteed bound.
 The raw 'Clinical only' method includes both clinical and technical covariates.
 Rare alterations, missingness, fixed factor count, small panels and limited

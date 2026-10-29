@@ -5,11 +5,18 @@ from docx import Document
 from docx.shared import Inches,Pt,RGBColor
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
+from docx.enum.style import WD_STYLE_TYPE
 ROOT=Path(__file__).resolve().parents[1]
 
 
 def reference(path):
     d=Document();s=d.sections[0]
+    for name in ['First Paragraph','Compact','Source Code']:
+        if name not in d.styles:
+            st=d.styles.add_style(name,WD_STYLE_TYPE.PARAGRAPH);st.base_style=d.styles['Normal']
+    if 'Hyperlink' not in d.styles:
+        st=d.styles.add_style('Hyperlink',WD_STYLE_TYPE.CHARACTER)
+        st.font.color.rgb=RGBColor(0,70,130);st.font.underline=True
     s.page_width=Inches(8.5);s.page_height=Inches(11)
     s.top_margin=s.bottom_margin=Inches(.7)
     s.left_margin=s.right_margin=Inches(.75)
@@ -37,6 +44,7 @@ def main():
     disclosure=next(line for line in readme.splitlines() if line.startswith('**Simulation study.**'))
     content=disclosure+'\n\n'+content
     content=content.replace('](figures/','](../figures/')
+    content=re.sub(r'!\[([^]]*)\]\(([^)]+)\)',r'![](\2){fig-alt="\1" width=6.4in}',content)
     repo='https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA/blob/main/'
     content=re.sub(r'(?<!!)\[([^]]+)\]\((?!https?://|#)([^)]+)\)',lambda m:f'[{m[1]}]({repo}{m[2]})',content)
     header='''---
@@ -54,7 +62,7 @@ execute:
 
 '''
     qmd=ROOT/'report/manuscript.qmd';qmd.write_text(header+content,encoding='utf-8')
-    subprocess.run([args.quarto,'render',str(qmd),'--to','docx','--output','Copula_MOFA_Simulation_Report.docx'],cwd=ROOT,check=True)
+    subprocess.run([args.quarto,'render',qmd.name,'--to','docx','--output','Copula_MOFA_Simulation_Report.docx'],cwd=qmd.parent,check=True)
     out=ROOT/'report/Copula_MOFA_Simulation_Report.docx';d=Document(out)
     d.core_properties.author='Vusumuzi Mabasa'
     for st in d.styles:
@@ -67,6 +75,12 @@ execute:
         if p.text.startswith('Table '):p.paragraph_format.keep_with_next=True
     for shape in d.inline_shapes:
         ratio=Inches(6.4)/shape.width;shape.width=Inches(6.4);shape.height=int(shape.height*ratio)
+    # Rebuild native Word tables to avoid importer-specific Pandoc cell layouts.
+    for old in list(d.tables):
+        new=d.add_table(rows=len(old.rows),cols=len(old.columns));new.style='Table Grid'
+        for source_row,dest_row in zip(old.rows,new.rows):
+            for source,dest in zip(source_row.cells,dest_row.cells):dest.text=source.text
+        old._tbl.addprevious(new._tbl);old._tbl.getparent().remove(old._tbl)
     for table in d.tables:
         table.autofit=True
         borders=OxmlElement('w:tblBorders')
@@ -84,7 +98,7 @@ execute:
                 cell._tc.get_or_add_tcPr().append(shade)
                 for p in cell.paragraphs:
                     p.paragraph_format.space_before=Pt(3);p.paragraph_format.space_after=Pt(3)
-                    if len(table.rows)<=8:p.paragraph_format.keep_with_next=True
+                    if len(table.rows)<=10:p.paragraph_format.keep_with_next=(i<len(table.rows)-1)
                     for r in p.runs:r.font.size=Pt(9.5);r.bold=i==0
     for st in d.styles:
         for b in list(st.element.iter(qn('w:pBdr'))):b.getparent().remove(b)
@@ -95,7 +109,7 @@ execute:
         for r in p.runs:r.font.size=Pt(8)
     d.save(out)
     equations=len(d.element.xpath('.//m:oMath'))
-    audit=dict(author=d.core_properties.author,figures=len(d.inline_shapes),tables=len(d.tables),editable_equations=equations)
+    audit=dict(author=d.core_properties.author,figures=len(d.inline_shapes),tables=len(d.tables),table_rows=[len(t.rows) for t in d.tables],editable_equations=equations)
     (ROOT/'results/document_structure.json').write_text(json.dumps(audit,indent=2));print(json.dumps(audit))
 
 

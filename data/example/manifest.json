@@ -1,0 +1,13 @@
+{
+  "disclosure": "Entirely synthetic illustrative data; independent of evaluation and calibration.",
+  "seed": 69102902,
+  "participants": 180,
+  "views": [
+    "germline",
+    "somatic",
+    "RNA",
+    "protein"
+  ],
+  "missing_protein_fraction": 0.1597222222222222,
+  "genomic_features": "Synthetic correlated indicators and dosages; no real variant identifiers or empirical LD."
+}

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "stages": [
+    "10 numerical tests",
+    "360-cohort aggregation",
+    "8 deterministic model replays",
+    "8 independent R metric checks",
+    "research manuscript"
+  ],
+  "note": "Dimension-aware recovery correction documented; original raw records retained."
+}

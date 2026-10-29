@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "fixture": "regular_180_0",
+      "method": "Copula",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "regular_180_0",
+      "method": "MOFA+",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "missing_360_0",
+      "method": "Copula",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "missing_360_0",
+      "method": "MOFA+",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "heavy_tail_180_0",
+      "method": "Copula",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "heavy_tail_180_0",
+      "method": "MOFA+",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "dependence_only_360_0",
+      "method": "Copula",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    },
+    {
+      "fixture": "dependence_only_360_0",
+      "method": "MOFA+",
+      "model_error": 0.0,
+      "metric_error": 0.0
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "R_version": "4.5.1",
+  "jsonlite_version": "2.0.0",
+  "fixtures": 8,
+  "checks": [
+    {
+      "fixture": "regular_180_0_Copula",
+      "max_absolute_error": 6.6613381477509392e-16
+    },
+    {
+      "fixture": "regular_180_0_MOFA+",
+      "max_absolute_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "missing_360_0_Copula",
+      "max_absolute_error": 8.8817841970012523e-16
+    },
+    {
+      "fixture": "missing_360_0_MOFA+",
+      "max_absolute_error": 3.3306690738754696e-16
+    },
+    {
+      "fixture": "heavy_tail_180_0_Copula",
+      "max_absolute_error": 1.1102230246251565e-15
+    },
+    {
+      "fixture": "heavy_tail_180_0_MOFA+",
+      "max_absolute_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "dependence_only_360_0_Copula",
+      "max_absolute_error": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "dependence_only_360_0_MOFA+",
+      "max_absolute_error": 5.5511151231257827e-16
+    }
+  ]
+}

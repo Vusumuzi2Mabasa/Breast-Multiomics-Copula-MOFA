@@ -14,7 +14,7 @@ def table(headers,rows):
 
 def main():
     s=pd.read_csv(ROOT/'results/summary.csv');c=pd.read_csv(ROOT/'results/paired_contrasts.csv')
-    d=pd.read_csv(ROOT/'results/dependence_summary.csv');diag=json.loads((ROOT/'results/diagnostics.json').read_text())
+    d=pd.read_csv(ROOT/'results/dependence_summary.csv',keep_default_na=False);diag=json.loads((ROOT/'results/diagnostics.json').read_text())
     audit=json.loads((ROOT/'results/audit.json').read_text())
     def val(scenario,n,method,metric='auc_mean'):
         return float(s[(s.scenario==scenario)&(s.n==n)&(s.method==method)].iloc[0][metric])
@@ -25,24 +25,33 @@ def main():
         paired.append([label,f'{g.difference:+.3f}',f'{g.lower:+.3f} to {g.upper:+.3f}',f'{val(scenario,360,"MOFA+","brier_mean"):.3f}',f'{val(scenario,360,"Copula","brier_mean"):.3f}'])
     diagrows=[[a['method'],a['successful'],a['flagged'],f"{a['median_seconds']:.2f}"] for a in diag]
     deprows=[]
-    for _,r in d.iterrows():
-        deprows.append([int(r.n),'Null' if r.scenario=='null' else 'Dependence change',r.method,f'{r.rate:.3f}',f'{r.lower:.3f} to {r.upper:.3f}'])
+    for (n,scenario),group in d.groupby(['n','scenario']):
+        row=[int(n),'0 (null)' if scenario=='null' else scenario.removeprefix('rho_')]
+        for method in ['Pearson log','Copula normal scores']:
+            r=group[group.method==method].iloc[0]
+            row.append(f'{r.rate:.3f} ({r.lower:.3f}–{r.upper:.3f})')
+        deprows.append(row)
     copdiag=next(a for a in diag if a['method']=='Copula')
+    fresh_null=d[d.scenario=='null'].rate
+    def depval(n,scenario,method):
+        return float(d[(d.n==n)&(d.scenario==scenario)&(d.method==method)].iloc[0].rate)
     avg=c[(c.metric=='auc')&(c.comparator=='MOFA+')&(c.scenario!='dependence_only')].difference.mean()
     mean_recovery=s[(s.method=='MOFA+')&(s.scenario!='dependence_only')].recovery_mean.mean()
     cop_recovery=s[(s.method=='Copula')&(s.scenario!='dependence_only')].recovery_mean.mean()
+    mofa_predictive=s[(s.method=='MOFA+')&(s.scenario!='dependence_only')].predictive_recovery_mean.mean()
+    cop_predictive=s[(s.method=='Copula')&(s.scenario!='dependence_only')].predictive_recovery_mean.mean()
     main=rf'''# Copula and MOFA Integration of Simulated Blood Multiomics
 
 **Vusumuzi Mabasa**
 
 **Simulation study.** All molecular measurements, participants, countries and subtype labels are synthetic. No TACA, Clin-MAP, patient or controlled-access data were used. This repository evaluates methods for a proposed blood-based breast cancer multi-omics study; it does not report biomarkers or results from that study.
 
-[Word report](report/Copula_MOFA_Simulation_Report.docx) · [Quarto manuscript](report/manuscript.qmd) · [Numerical results](results/summary.csv) · [Workflow](workflow.txt)
+[Word report](report/Copula_MOFA_Simulation_Report.docx) · [Quarto manuscript](report/manuscript.qmd) · [Numerical results](results/summary.csv) · [Small synthetic dataset](data/example) · [Workflow](workflow.txt)
 
 <!-- manuscript -->
 ## Abstract
 
-Integration of blood-derived genomic, transcriptomic and proteomic measurements requires methods that accommodate different measurement scales without mistaking shared technical variation for biology. We compared an extended-rank-likelihood Gaussian copula factor model with the official MOFA+ engine, a Gaussian MOFA+ sensitivity analysis and rank PCA. The benchmark comprised 360 independently generated training cohorts, each paired with 200 independent test participants, across six mechanisms and two training sizes. Each panel contained 48 features. A separate experiment used 1,000 calibration and 2,000 evaluation datasets to assess a prespecified RNA–protein dependence test. Across the five scenarios containing subtype mean signals, the unweighted mean paired ROC-AUC difference between copula integration and mixed-likelihood MOFA+ was {avg:+.3f}; this aggregate is descriptive and does not establish superiority. The analysis separates factor recovery, subtype prediction and detection of altered dependence. The small panels and synthetic mechanisms support methodological assessment rather than clinical inference.
+Integration of blood-derived genomic, transcriptomic and proteomic measurements requires methods that accommodate different measurement scales without mistaking shared technical variation for biology. We compared an extended-rank-likelihood Gaussian copula factor model with the official MOFA+ engine, a Gaussian MOFA+ sensitivity analysis and rank PCA. The benchmark comprised 360 independently generated training cohorts, each paired with 200 independent test participants, across six mechanisms and two training sizes. Each panel contained 48 features. A separate, prospectively strengthened experiment used 10,000 calibration and 8,000 fresh evaluation datasets to assess a prespecified RNA–protein dependence test; the initial smaller calibration experiment was preserved. Across the five scenarios containing subtype mean signals, the unweighted mean paired ROC-AUC difference between copula integration and mixed-likelihood MOFA+ was {avg:+.3f}; this aggregate is descriptive and does not establish superiority. The analysis separates factor recovery, subtype prediction and detection of altered dependence. The small panels and synthetic mechanisms support methodological assessment rather than clinical inference.
 
 ## Introduction
 
@@ -69,6 +78,8 @@ Z_{{ij}}=\frac{{\lambda_j^T H_i+\epsilon_{{ij}}}}{{\sqrt{{1+\|\lambda_j\|^2}}}},
 $$
 
 The first two loadings alternated across features, with selected opposing signs. The weaker third loading was 0.25 throughout. Under the regular mechanism, RNA and protein were affine Gaussian measurements. Under the skewed mechanism, RNA counts followed negative-binomial margins with dispersion parameter 8 and means spanning approximately 20–400 before library scaling. Library sizes were lognormal around 20 million. RNA was represented by log2(CPM+1), and lognormal protein abundance by its log2 value. This reduced panel is not a whole-transcriptome count matrix; its known simulated library size is used rather than estimating a library size by summing the retained genes.
+
+Mixed observations were generated by the quantile construction $Y_{{ij}}=F_j^{{-1}}(U_{{ij}})$, with $U_{{ij}}=\Phi(Z_{{ij}})$ under Gaussian dependence and the appropriate t-distribution CDF under the heavy-tail mechanism. For an RNA count with mean $\mu$, the specified negative-binomial variance was $\mu+\mu^2/8$.
 
 The technical mechanism added blood-cell composition, country and batch shifts to RNA and protein. Five unnamed synthetic countries had proportions 0.35, 0.25, 0.20, 0.12 and 0.08. They represent imbalanced sampling strata, not named populations or ancestry categories. The missing-protein mechanism additionally removed values with an abundance-dependent probability:
 
@@ -113,6 +124,8 @@ Prediction used a computationally inexpensive plug-in projection from the poster
 
 MOFA+ was fitted with the official Python engine, mofapy2 0.7.5 [1,4]. The primary configuration used Gaussian germline dosages, Bernoulli somatic indicators and Gaussian transformed RNA/protein measurements. A sensitivity configuration used Gaussian likelihoods for all standardised views. Both used three factors, automatic relevance determination and spike-and-slab weights, with up to 500 variational iterations and the engine's medium convergence criterion. Official convergence messages were recorded. Default engine factor selection was constrained to the same initial factor budget as the copula model; the true budget was known by design and is an optimistic simplification.
 
+For a Gaussian view, the MOFA representation was $Y^{{(m)}}=ZW^{{(m)T}}+E^{{(m)}}$. For the somatic Bernoulli view, the observation probability was $P(Y_{{ij}}^{{(m)}}=1\mid Z,W)=\operatorname{{expit}}(Z_iW_j^{{(m)T}})$. Unlike the copula, this model specifies the observation likelihood directly rather than through latent order constraints.
+
 Continuous feature means and standard deviations were estimated from training data only. Gaussian-view missing values remained missing. New-participant MOFA scores were conditional MAP estimates using fitted loadings, Gaussian noise precisions and the Bernoulli likelihood, with a standard-normal factor prior. The same MAP convention was used for training scores. This extension is implemented in the benchmark rather than attributed to an official MOFA prediction API.
 
 Rank PCA used training empirical normal scores, with zero imputation on the normal-score scale, followed by three principal components. A covariate-only reference included age, country, blood-cell composition and batch; it is labelled `Clinical only` in raw records for compatibility. An oracle reference used the three true latent factors plus the same covariates. The oracle is a reference for accessible signal and is not a clinical method or guaranteed finite-sample upper bound.
@@ -127,7 +140,7 @@ $$
 S=\frac1{{3}}\sum_{{k=1}}^3\cos^2(\theta_k).
 $$
 
-This score is invariant to factor sign, permutation and rotation. In the dependence-only setting it describes recovery of the original backbone, not recovery of the additional subtype-specific pair relationship. Independent test outcomes were evaluated using ROC AUC, average precision and Brier score,
+This score is invariant to factor sign, permutation and rotation. Missing estimated dimensions contribute zero, and the denominator remains the three generating dimensions. Independent R checking identified a pre-release implementation issue in the original raw score, which averaged only over numerically retained dimensions. The primary [evaluation table](results/evaluation.csv) corrects this using stored model scores; [the correction table](results/recovery_correction.csv) preserves both quantities and estimated ranks. Raw replicate records, fitted models and all prediction results are unchanged. The [metric correction](protocol/metric_correction.json) documents this amendment. A secondary descriptive measure applies the same calculation to the first two, subtype-predictive backbone factors; it measures capture of that target subspace rather than complete recovery of all three factors. In the dependence-only setting, the backbone factors are not subtype predictors. Independent test outcomes were evaluated using ROC AUC, average precision and Brier score,
 
 $$
 \mathrm{{Brier}}=\frac1{{n_{{test}}}}\sum_i(\widehat p_i-T_i)^2.
@@ -144,7 +157,9 @@ Q=\frac{{|\operatorname{{atanh}}(r_1)-\operatorname{{atanh}}(r_0)|}}
 {{\sqrt{{1/(n_1-3)+1/(n_0-3)}}}}.
 $$
 
-Rather than relying on a normal approximation, each method and sample size used 500 independent null calibration datasets. The strict rejection threshold was the 476th ascending calibration statistic. Under exchangeability with a new null dataset, the resulting averaged rejection bound is $25/501\approx0.0499$. Fresh evaluation used 500 null and 500 alternative datasets per sample size. Wilson intervals describe evaluation-binomial uncertainty conditional on the realised calibration bank; they do not include all calibration-bank uncertainty. This is a targeted pair test without feature search, not a test of causal regulation or an output of the factor model.
+Rather than relying on a normal approximation, the initial experiment used 500 independent null calibration datasets per method and sample size, with the 476th ascending statistic as a strict threshold. Its realised null rejection rate reached 8.0% for the rank-normal statistic at N = 180. All initial results remain available in [the initial summary](results/dependence_initial_summary.csv). An averaged rank guarantee does not guarantee a 5% conditional rejection probability for every realised calibration bank.
+
+A [prospective uniform extension](protocol/dependence_validation.json), frozen before its own simulations, increased calibration to 5,000 datasets per sample size and evaluated 1,000 fresh datasets at each correlation difference 0, 0.25, 0.40 and 0.65. Both statistics and both sample sizes received the same extension. Its strict threshold was the 4,751st ascending statistic, giving an averaged exchangeability bound of $250/5001\approx0.0500$. No subsequent threshold tuning was performed using validation outcomes. Wilson intervals describe evaluation-binomial uncertainty conditional on the realised calibration bank; they do not include all calibration-bank uncertainty. This is a targeted pair test without feature search, not a test of causal regulation or an output of the factor model.
 
 ## Results
 
@@ -157,6 +172,8 @@ The generated panels combine discrete genomic observations with continuous, tran
 Figure 1. One feature from each view in an independent synthetic missing-protein dataset. Protein histograms include observed values only. The regular setting uses continuous transformed-scale measurements, while the remaining settings include simulated RNA counts.
 
 Across the five mean-signal mechanisms, the unweighted mean backbone recovery was {mean_recovery:.3f} for mixed-likelihood MOFA+ and {cop_recovery:.3f} for the copula pipeline. Recovery assesses the complete integration-and-projection pipelines, so differences cannot be attributed solely to the choice of likelihood. Technical shifts and abundance-dependent missingness test whether the estimated factors remain aligned with the generating biological backbone.
+
+The secondary capture score for the two subtype-predictive factors was {mofa_predictive:.3f} for mixed-likelihood MOFA+ and {cop_predictive:.3f} for the copula pipeline. Removal of a weak, non-predictive third factor can lower full-backbone recovery without materially reducing subtype prediction. Consequently, a higher three-factor score should not by itself be interpreted as better recovery of clinically relevant information.
 
 ![Recovery of the generating factor subspace](figures/factor_recovery.png)
 
@@ -206,13 +223,15 @@ Figure 6. Copula maximum split Rhat across the fixed monitored entries and elaps
 
 The companion experiment tests a dependence change without an abundance shift. Its calibration is separate from factor fitting and subtype classification. A successful dependence test can therefore coexist with chance-level performance of the additive classifier in the dependence-only benchmark.
 
-Table 4. Fresh evaluation of the prespecified pair test after independent calibration. Each row contains 500 evaluation datasets; intervals are conditional Wilson intervals.
+After the larger calibration extension, fresh null rejection rates ranged from {fresh_null.min():.1%} to {fresh_null.max():.1%}. At a moderate correlation difference of 0.25, the normal-score statistic detected {depval(180,'rho_0.25','Copula normal scores'):.1%} of alternatives at N = 180 and {depval(360,'rho_0.25','Copula normal scores'):.1%} at N = 360; corresponding Pearson-log values were {depval(180,'rho_0.25','Pearson log'):.1%} and {depval(360,'rho_0.25','Pearson log'):.1%}. These similar rates do not establish a general advantage for the rank-normal statistic. The near-ceiling strong-signal results alone would have obscured the moderate-signal limitations. This comparison concerns two targeted correlation statistics, not a power comparison between fitted factor models.
 
-'''+table(['N','Mechanism','Statistic','Rejection rate','95% interval'],deprows)+r'''
+Table 4. Fresh evaluation of the prespecified pair test after the larger independent calibration. Each method/cell contains 1,000 evaluation datasets; parentheses contain conditional 95% Wilson intervals. The non-TNBC latent correlation is always zero.
+
+'''+table(['N','TNBC latent correlation','Pearson log','Copula normal scores'],deprows)+r'''
 
 ![Calibrated dependence testing](figures/dependence_test.png)
 
-Figure 7. Null rejection and alternative detection probabilities with Wilson intervals. The alternative changes latent RNA/protein correlation from 0 to 0.65. This relatively strong effect is a feasibility benchmark and does not establish power for smaller biological differences.
+Figure 7. Fresh null rejection and detection probabilities with Wilson intervals, using correlation differences 0.25, 0.40 and 0.65. The largest effect is a strong-signal feasibility benchmark. Moderate alternatives are included to avoid judging methods solely at a power ceiling.
 
 ## Discussion
 
@@ -224,7 +243,7 @@ For the proposed breast cancer Study 3, MOFA+ remains an established integration
 
 Several limitations constrain extrapolation. The feature panel is deliberately small, genomic dependence is synthetic, and the factor count is known. The model does not reproduce real African LD, full tumour mutation processes or a whole-transcriptome assay. The missingness mechanism is not explicitly fitted. Rank likelihood reduces sensitivity to monotone marginal transformations but does not solve confounding or non-ignorable missingness. A Gaussian copula is misspecified for the heavy-tail dependence mechanism. The plug-in projection may discard posterior information and may disadvantage the copula relative to exact predictive inference.
 
-Thirty integration replicates per cell provide a manageable benchmark, not precise evidence of small power differences. The companion test has more replicates but examines only one prespecified pair and a strong alternative. It does not address genome-wide multiplicity. No leave-one-country-out validation, empirical reference-data validation, full posterior calibration, asymmetric copula comparison or extensive factor-number sensitivity analysis was performed. These are prospective extensions rather than completed analyses.
+Thirty integration replicates per cell provide a manageable benchmark, not precise evidence of small power differences. The companion test has more replicates and several effect sizes but examines only one prespecified pair. It does not address genome-wide multiplicity. No leave-one-country-out validation, empirical reference-data validation, full posterior calibration, asymmetric copula comparison or extensive factor-number sensitivity analysis was performed. These are prospective extensions rather than completed analyses.
 
 ## Conclusion
 
@@ -241,6 +260,7 @@ python -m pip install -r requirements.txt
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 python -m unittest discover -s tests -v
 python src/run_all.py --workers 2
+python src/dependence_validation.py
 python src/analyse.py
 python src/validate.py
 Rscript --vanilla src/check_metrics.R .
@@ -263,6 +283,13 @@ Word generation requires Quarto; independent metric verification requires R and 
 
 All released observations are synthetic. The repository contains no proposal document, personal contact information, clinical records, raw patient sequencing or collaborator data. The source is released under the MIT licence. Cite the repository and the original MOFA and copula-method publications when reusing the benchmark. Implementation of an existing method and its application to this simulation are not claims of methodological novelty.
 '''
+    # Keep the two prediction tables together before their complementary plots.
+    start=main.index('![Independent test prediction across all settings]')
+    end=main.index('Paired contrasts isolate',start)
+    prediction_block=main[start:end]
+    main=main[:start]+main[end:]
+    insert=main.index('![Paired performance differences]')
+    main=main[:insert]+prediction_block+main[insert:]
     (ROOT/'README.md').write_text(main,encoding='utf-8')
     print('Research README generated from audited tables.')
 

@@ -8,6 +8,7 @@ from sklearn.metrics import roc_auc_score,average_precision_score,brier_score_lo
 from simulate import generate,standardise
 from models import fit_copula,fit_mofa,normal_scores_fit,normal_scores_apply
 from benchmark import project_mofa,copula_projection,recovery
+from metrics import full_subspace_recovery
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -46,6 +47,7 @@ def main():
             maxerror=max(abs(metrics[j]-stored[m]) for j,m in enumerate(['auc','ap','brier','recovery']))
             assert maxerror<1e-9,maxerror
             checks.append(dict(fixture=stem,method=method,model_error=error,metric_error=maxerror))
+            metrics[-1]=full_subspace_recovery(a,tr['h'])
             rfixtures.append(dict(name=stem+'_'+method,truth=te['y'].tolist(),probability=prob.tolist(),scores=a.tolist(),latent=tr['h'].tolist(),expected=metrics))
     (out/'replay.json').write_text(json.dumps(dict(status='passed',checks=checks),indent=2))
     (out/'R_fixtures.json').write_text(json.dumps(rfixtures))

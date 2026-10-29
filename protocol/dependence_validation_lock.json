@@ -1,0 +1,8 @@
+{
+  "frozen_utc": "2026-10-29T15:46:22.920723+00:00",
+  "sources": {
+    "protocol/dependence_validation.json": "8f2d33b37a64659d621cfcfe7ddd9e04cf838016008c5a84e2449371df547bbf",
+    "src/dependence_validation.py": "79a5c14dbc1f0075ed6d3f3f7b4cba96eaa410e8a9590b2e5501ff4bc6c1f1da",
+    "src/dependence.py": "7e455c575489c3aa125d97cba10b1a75f35047d501e499990d2482f6bc8cc046"
+  }
+}

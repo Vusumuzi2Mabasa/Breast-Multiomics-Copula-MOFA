@@ -1,0 +1,9 @@
+n,scenario,method,sum,count,mean
+180,dependence_change,Copula normal scores,499,500,0.998
+180,dependence_change,Pearson log,497,500,0.994
+180,null,Copula normal scores,40,500,0.08
+180,null,Pearson log,29,500,0.058
+360,dependence_change,Copula normal scores,500,500,1.0
+360,dependence_change,Pearson log,500,500,1.0
+360,null,Copula normal scores,24,500,0.048
+360,null,Pearson log,21,500,0.042

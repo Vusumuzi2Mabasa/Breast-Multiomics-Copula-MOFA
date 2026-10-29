@@ -1,0 +1,12 @@
+{
+  "reason": "Initial 500-calibration bank yielded an 8% realised null rate for the rank-normal pair statistic at N=180. Preserve initial results and uniformly strengthen calibration before interpreting detection rates.",
+  "sample_sizes": [180, 360],
+  "calibration_replicates": 5000,
+  "evaluation_replicates": 1000,
+  "rho_alternatives": [0, 0.25, 0.4, 0.65],
+  "calibration_seed": 109102901,
+  "evaluation_seed": 119102901,
+  "rank": 4751,
+  "averaged_null_bound": "250/5001",
+  "policy": "Apply the same extension to both statistics and both sample sizes; no further threshold tuning based on validation outcomes. Initial results remain available."
+}

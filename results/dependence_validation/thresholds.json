@@ -1,0 +1,20 @@
+{
+  "180": {
+    "thresholds": [
+      1.9692605909463294,
+      1.9649788619015345
+    ],
+    "calibration_n": 5000,
+    "strict_rank": 4751,
+    "averaged_null_bound": 0.04999000199960008
+  },
+  "360": {
+    "thresholds": [
+      1.9619987225287476,
+      1.9672002857555242
+    ],
+    "calibration_n": 5000,
+    "strict_rank": 4751,
+    "averaged_null_bound": 0.04999000199960008
+  }
+}

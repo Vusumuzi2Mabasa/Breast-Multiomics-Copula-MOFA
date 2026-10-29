@@ -27,6 +27,8 @@ if __name__=='__main__':
     def run(args):subprocess.run(args,cwd=dest,env=env,check=True)
     run([sys.executable,'-m','unittest','discover','-s','tests','-v'])
     run([sys.executable,'src/run_all.py','--workers',str(a.workers)])
+    run([sys.executable,'src/dependence_validation.py'])
+    run([sys.executable,'src/export_example.py'])
     run([sys.executable,'src/analyse.py'])
     run([sys.executable,'src/validate.py'])
     if a.rscript:run([a.rscript,'--vanilla','src/check_metrics.R','.'])

@@ -1,0 +1,15 @@
+test_against_tetrachoric_likelihood (test_discrete.TestBinaryCopula.test_against_tetrachoric_likelihood) ... ok
+test_missing_dimension_is_zero (test_metrics.TestRecovery.test_missing_dimension_is_zero) ... ok
+test_no_recovered_dimension (test_metrics.TestRecovery.test_no_recovered_dimension) ... ok
+test_rotation_and_sign_invariance (test_metrics.TestRecovery.test_rotation_and_sign_invariance) ... ok
+test_known_correlation (test_models.TestModels.test_known_correlation) ... ok
+test_monotone_invariance (test_models.TestModels.test_monotone_invariance) ... ok
+test_ordering_ties_and_missing (test_models.TestModels.test_ordering_ties_and_missing) ... ok
+test_reproducible_generator_and_panels (test_models.TestModels.test_reproducible_generator_and_panels) ... ok
+test_rhat_detects_shift (test_models.TestModels.test_rhat_detects_shift) ... ok
+test_engine_and_new_participant_projection (test_mofa.TestOfficialMOFA.test_engine_and_new_participant_projection) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 11.467s
+
+OK

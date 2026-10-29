@@ -1,0 +1,26 @@
+[
+  {
+    "method": "MOFA+",
+    "successful": 360,
+    "flagged": 0,
+    "extended": 0,
+    "median_seconds": 1.8693312000032165,
+    "maximum_rhat": null
+  },
+  {
+    "method": "MOFA+ Gaussian",
+    "successful": 360,
+    "flagged": 0,
+    "extended": 0,
+    "median_seconds": 1.7550646999989112,
+    "maximum_rhat": null
+  },
+  {
+    "method": "Copula",
+    "successful": 360,
+    "flagged": 0,
+    "extended": 4,
+    "median_seconds": 21.37385439999707,
+    "maximum_rhat": 1.0996709900512618
+  }
+]

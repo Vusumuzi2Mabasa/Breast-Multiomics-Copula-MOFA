@@ -1,0 +1,6 @@
+{
+  "reason": "Independent R verification detected that scipy subspace_angles omits numerically absent estimated factors. The original mean of returned cosines therefore rewarded models retaining fewer than the three generating dimensions.",
+  "correction": "Use the sum of squared principal cosines divided by the prespecified true dimension (3), with missing dimensions contributing zero. Preserve the original raw records and expose the original rank-conditional score separately.",
+  "scope": "Evaluation metric only; no simulation, fitted model, seed, tuning, outcome or prediction changes. Recompute from stored scores or the exact deterministic rank-PCA transformation.",
+  "verification": "Missing-two-of-three and rotation invariance tests; independent R SVD with matched numerical rank tolerance."
+}

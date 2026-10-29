@@ -1,0 +1,60 @@
+
+        #########################################################
+        ###           __  __  ____  ______                    ### 
+        ###          |  \/  |/ __ \|  ____/\    _             ### 
+        ###          | \  / | |  | | |__ /  \ _| |_           ### 
+        ###          | |\/| | |  | |  __/ /\ \_   _|          ###
+        ###          | |  | | |__| | | / ____ \|_|            ###
+        ###          |_|  |_|\____/|_|/_/    \_\              ###
+        ###                                                   ### 
+        ######################################################### 
+         
+
+
+Features names not provided, using default naming convention:
+- feature1_view1, featureD_viewM
+
+Groups names not provided, using default naming convention:
+- group1, group2, ..., groupG
+
+Samples names not provided, using default naming convention:
+- sample1_group1, sample2_group1, sample1_group2, ..., sampleN_groupG
+
+Successfully loaded view='germline' group='group0' with N=180 samples and D=6 features...
+Successfully loaded view='somatic' group='group0' with N=180 samples and D=6 features...
+Successfully loaded view='RNA' group='group0' with N=180 samples and D=24 features...
+Successfully loaded view='protein' group='group0' with N=180 samples and D=12 features...
+
+
+Model options:
+- Automatic Relevance Determination prior on the factors: False
+- Automatic Relevance Determination prior on the weights: True
+- Spike-and-slab prior on the factors: False
+- Spike-and-slab prior on the weights: True
+Likelihoods:
+- View 0 (germline): gaussian
+- View 1 (somatic): bernoulli
+- View 2 (RNA): gaussian
+- View 3 (protein): gaussian
+
+
+
+Warning: some view(s) have less than 15 features, MOFA won't be able to learn meaningful factors for these view(s)...
+
+
+
+######################################
+## Training the model with seed 29420931 ##
+######################################
+
+
+
+Converged!
+
+
+
+#######################
+## Training finished ##
+#######################
+
+

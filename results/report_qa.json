@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "pages": 13,
+  "visual_review": "All release pages inspected; pages 1-6 are byte-identical to inspected preceding render and pages 7-13 were directly inspected after final pagination.",
+  "figures": 7,
+  "tables": 4,
+  "editable_equations": 20,
+  "author": "Vusumuzi Mabasa",
+  "word_sha256": "fc7b59137feabfbdb02dc2531d16a5d871f330a134e7d5cba094e5d6d48d0eb2",
+  "readme_sha256": "997ecccb132270686c582f3d5ec6c943070885169beef5e5123362feb85348e2",
+  "rendered_page_sha256": {
+    "page-1.png": "a1e8e2de6014e6e00de6fdad45ec8cfcdc3f264ecc96f61956cb83da09bb291c",
+    "page-10.png": "bb011046cfa303fe1f0ced4878124245777e7bda9908be115811ee8c024e82f1",
+    "page-11.png": "030b71e43f3d5511bf397d1fa70624d913af219c0a8da160b1446fb238acdaa0",
+    "page-12.png": "2d904a2608c8dd20f04949a73325d5fe501461945d988bde32de2e678a629150",
+    "page-13.png": "11b32384d0a05e3af2d7542494fec11129d323a45cf137b836c36c8bbeb10474",
+    "page-2.png": "5920b15cf705899800ca999f2191c4ed709a0437d065d0d5c3e377c0739056b0",
+    "page-3.png": "c017cd326682791cadb166f27e110807feacaf171df47bbd687b1f0d681121a9",
+    "page-4.png": "dfe2507de0c9a70dea10215a5c617841ce265a91e1fe69ed9b1af2d4e2a6811f",
+    "page-5.png": "88116cbf7bd437d2668580781a06cf64bf26ece47a6678230f93f838a6d319c4",
+    "page-6.png": "28f84349cd2d9d30154b1aee6e46afc16e2d37fc33a9c447afc39b92f6015d8d",
+    "page-7.png": "83200a6998aaea9e7fb0b30d55591c1fd0b041fd5530c196dccc1039162f0e7d",
+    "page-8.png": "2b8cd7d3b73cb8d996671f8db0268875d90e596a42f4679ee5c1e9bffcfd7077",
+    "page-9.png": "cdd4356c6f356eed2663c01c1de822bbaaeb89d29852fef86473c1caee501270"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "frozen_utc": "2026-10-29T16:15:38.874663+00:00",
+  "sources": {
+    "src/metrics.py": "fdb7afe76f1e9bcb523451238fe8daaefb038a608c3bf17c8b8ed62d8498d776",
+    "tests/test_metrics.py": "abe7028673207324f360b587c9ef6003c11b1543cc578b5f687b1a5292aea41b",
+    "protocol/metric_correction.json": "be02f3d98739670c37207bf6ad895f2049cbf368e077a93e0638034a92b9508a"
+  }
+}
