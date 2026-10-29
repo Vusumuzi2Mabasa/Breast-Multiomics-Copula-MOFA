@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Cite this software and the original methodological papers listed in the README."
+title: "Copula and MOFA Integration of Simulated Blood Multiomics"
+authors:
+  - family-names: Mabasa
+    given-names: Vusumuzi
+type: software
+license: MIT
+repository-code: "https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA"

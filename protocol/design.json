@@ -1,0 +1,21 @@
+{
+  "title": "Copula and MOFA+ integration of simulated blood multiomics",
+  "author": "Vusumuzi Mabasa",
+  "disclosure": "Entirely synthetic data; no TACA, Clin-MAP or patient data used.",
+  "sample_sizes": [180, 360],
+  "test_size": 200,
+  "replicates": 30,
+  "scenarios": ["regular", "skewed", "technical", "missing", "heavy_tail", "dependence_only"],
+  "views": {"germline": 6, "somatic": 6, "RNA": 24, "protein": 12},
+  "factors": 3,
+  "burn": 600,
+  "draws": 900,
+  "thin": 3,
+  "chains": 2,
+  "mofa_iterations": 500,
+  "seed": 29102901,
+  "pilot_seed": 19102901,
+  "primary_estimands": ["squared principal-angle subspace recovery", "independent test ROC AUC", "independent test Brier score"],
+  "diagnostic_policy": "Copula Rhat >=1.1 triggers a prespecified same-seed rerun with three times burn and draws. Retain and report unresolved flags. MOFA convergence requires official Converged message. Failures remain in denominators. No performance-driven scenario or seed changes.",
+  "limitations": ["Small panels and few replicates", "Fixed factor count", "Plug-in score projection", "Synthetic countries are not named African populations", "No causal or clinical validation"]
+}

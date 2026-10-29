@@ -1,0 +1,19 @@
+{
+  "frozen_utc": "2026-10-29T15:27:55.497082+00:00",
+  "sources": {
+    "src/models.py": "51ca07d07a724be697295476efdd6682bc9b70b807a2fd1af2fe31e173983170",
+    "src/simulate.py": "fcbf08b6317884dd43ab733dd74fcca8a9c0f07c3ed3fb514fe8b4b0d7ba21f2",
+    "src/benchmark.py": "4d5e46ec9ad45282902fead7c99bb9da88549b97ff624db39930b4b577183af8",
+    "src/dependence.py": "7e455c575489c3aa125d97cba10b1a75f35047d501e499990d2482f6bc8cc046",
+    "src/run_all.py": "42ee524b6634206c8947c0678e13f028a5b8cfcf96d25881e1a8edb45963df8f",
+    "protocol/design.json": "97a2a29f166448826b3f7e9d961620c1c4238b3b2bb8c598dd598f03c3fe1c92",
+    "tests/test_models.py": "3e1b161bba210396339dca2641d7a073711b9975abecdf6d203f62f0abb2c1f8"
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "mofapy2": "0.7.5",
+    "pandas": "3.1.0"
+  }
+}

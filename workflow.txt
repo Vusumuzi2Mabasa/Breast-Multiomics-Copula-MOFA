@@ -1,0 +1,149 @@
+COPULA AND MOFA INTEGRATION OF SIMULATED BLOOD MULTIOMICS
+Author: Vusumuzi Mabasa
+
+1. SCOPE
+This is a synthetic-data methods benchmark. No real TACA, Clin-MAP or patient
+data are used. It is a feasibility study for blood-based breast cancer Study 3.
+The scripts do not call, classify or interpret clinical genomic variants.
+
+2. PROJECT STRUCTURE
+protocol/design.json: prospective numerical design.
+protocol/source_lock.json: frozen design, numerical-source hashes and versions.
+src/simulate.py: four-view synthetic generator and train-only standardisation.
+src/models.py: official MOFA+ interface and custom Gaussian copula Gibbs sampler.
+src/benchmark.py: fitting, independent test projection and phenotype prediction.
+src/run_all.py: bounded parallel execution and dependence companion experiment.
+src/dependence.py: independently calibrated, prespecified RNA/protein pair tests.
+src/analyse.py: complete result tables, paired uncertainty and figures.
+src/validate.py: deterministic fixed-fixture replays and R validation inputs.
+src/check_metrics.R: independent AUC, average precision, Brier and subspace checks.
+src/manuscript.py: research README generated from numerical tables.
+src/build_word.py: Quarto manuscript and Word report with editable equations.
+src/reproduce.py: full rerun into a new directory without deleting prior results.
+tests/test_models.py: generator, ordering, invariance and correlation tests.
+results/replicates: 360 fixed replicate JSON records, fixtures and MOFA logs.
+results/dependence: calibration banks, thresholds and fresh evaluation records.
+figures: publication PNG and SVG figures.
+report: Quarto source and final Word report.
+work: ignored dependencies, logs and internal rendering QA.
+
+3. NUMERICAL DESIGN
+Six mechanisms x 2 training sizes x 30 replicates = 360 independent training/test
+pairs. Training sizes: 180 and 360. Independent test size: 200 per replicate.
+Features: 6 germline dosages, 6 somatic indicators, 24 RNA and 12 proteins.
+Methods: mixed MOFA+, Gaussian MOFA+, copula, rank PCA, covariates and oracle.
+Mean-signal outcomes depend on two of three latent backbone factors.
+Dependence-only outcomes instead alter one RNA/protein correlation.
+Non-TNBC is the synthetic comparator; all subtype labels are generated.
+The copula has two chains, rank-constrained mixed-data latent updates and proper
+priors. A fixed diagnostic rule extends sampling when monitored split Rhat >=1.1.
+The rank-PCA and copula projections learn empirical margins from training only.
+MOFA uses Gaussian transformed RNA/protein and an explicit Bernoulli somatic view.
+All test outcomes remain outside feature fitting, scaling and classifier fitting.
+Classifier penalty C=1 and latent factor count 3 are fixed, not test-tuned.
+
+4. WINDOWS AND TOSHIBA INSTALLATION
+Open PowerShell. Use a Python 3.12 installation with venv/pip support.
+
+Set-Location 'D:\Breast_Multiomics_Copula_MOFA'
+py -3.12 -m venv .venv
+& .\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+$env:OPENBLAS_NUM_THREADS='1'
+$env:OMP_NUM_THREADS='1'
+$env:MKL_NUM_THREADS='1'
+
+Install R with jsonlite and Quarto if not already available:
+Rscript --vanilla -e "install.packages('jsonlite',repos='https://cloud.r-project.org')"
+quarto --version
+
+5. WINDOWS FULL FRESH REPRODUCTION
+Use a NEW directory; the wrapper refuses to overwrite an existing directory.
+This preserves the released results and source lock.
+
+python src/reproduce.py --output 'D:\Breast_Multiomics_Copula_MOFA_fresh' --workers 2
+
+If Rscript and Quarto are not on PATH, provide their full executable paths:
+python src/reproduce.py --output 'D:\Breast_Multiomics_Copula_MOFA_fresh' --workers 2 --rscript 'C:\Program Files\R\R-4.5.1\bin\Rscript.exe' --quarto 'C:\Program Files\RStudio\resources\app\bin\quarto\bin\quarto.exe'
+
+Use --numerical-only if report generation is intentionally excluded.
+The original Toshiba execution used the bundled Codex Python runtime with
+PYTHONPATH=D:/Breast_Multiomics_Copula_MOFA/work/runtime and four workers.
+Task-local package installation left global Python unchanged.
+
+6. LINUX OR WSL INSTALLATION AND EXECUTION
+Mount paths vary. In WSL a Windows D: drive is commonly /mnt/d; confirm the
+actual Toshiba mount rather than assuming an HPC filesystem has that drive.
+
+cd /mnt/d
+git clone https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA.git
+cd Breast-Multiomics-Copula-MOFA
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+Rscript --vanilla -e "install.packages('jsonlite',repos='https://cloud.r-project.org')"
+python src/reproduce.py --output /mnt/d/Breast_Multiomics_Copula_MOFA_fresh --workers 2
+
+A conda environment specification is supplied as environment.yml. The complete
+benchmark was executed on Windows/Toshiba; Linux CI tests the numerical units
+and release audit rather than rerunning the full benchmark.
+
+7. INDIVIDUAL STAGES AND RESUME
+python -m unittest discover -s tests -v
+python src/run_all.py --workers 2
+python src/analyse.py
+python src/validate.py
+Rscript --vanilla src/check_metrics.R .
+python src/manuscript.py
+python src/build_word.py
+
+Existing per-replicate JSON files are skipped by the resumable runner.
+To recompute rather than resume, use src/reproduce.py with a new output folder.
+Do not delete or edit the released raw outputs in place.
+src/freeze.py creates a lock for a NEW design only and refuses to replace one.
+Changing a scientific source after freezing causes the benchmark to stop.
+
+8. INDEPENDENT DEPENDENCE TEST
+python src/dependence.py
+At each N, 500 null calibrations determine a strict threshold, then 500 fresh
+null and 500 fresh alternative datasets evaluate it. Two statistics use identical
+datasets. There is one prespecified pair and no discovery-based feature search.
+Thresholds use ascending rank 476/500; averaged null bound is 25/501.
+The test is separate from factor fitting and does not establish causality.
+
+9. WORD REPORT AND VISUAL QA
+src/build_word.py creates report/manuscript.qmd from the README manuscript text,
+renders it using Quarto and applies Word formatting. Equations remain editable.
+Author: Vusumuzi Mabasa. Results interpretations precede the corresponding figures.
+The report excludes machine-specific installation instructions.
+Word layout was rendered and visually reviewed before release. Rendering images
+and PDF intermediates are internal QA and are not repository deliverables.
+
+10. INTERPRETATION
+Compare factor recovery, prediction and dependence testing separately.
+Report paired differences with uncertainty, computational costs and diagnostics.
+The oracle is a simulated reference, not a practical method or guaranteed bound.
+The raw 'Clinical only' method includes both clinical and technical covariates.
+Rare alterations, missingness, fixed factor count, small panels and limited
+replicates constrain conclusions. No clinical or causal claims are supported.
+
+11. GITHUB PUBLISHING
+GitHub CLI commands for a new, authenticated personal checkout:
+
+gh auth login
+git init -b main
+git config core.autocrlf false
+git add .
+git commit -m "Add reproducible copula and MOFA multiomics simulation benchmark"
+gh repo create Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA --public --source=. --remote=origin --push
+
+For subsequent updates:
+git add .
+git commit -m "Update simulation analyses and manuscript"
+git push origin main
+
+Do not upload work/, virtual environments, credentials, patient data or proposal
+documents. The project's original publication used the authenticated GitHub API
+for repository creation because the available connector lacked that action,
+followed by standard Git over HTTPS. No credentials are stored in this project.
