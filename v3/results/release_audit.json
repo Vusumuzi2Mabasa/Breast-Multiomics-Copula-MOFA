@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "preserved_files": 2699,
+  "eqtl_cohorts": 1600,
+  "fresh_null_cohorts": 800,
+  "eqtl_gene_records": 19200,
+  "integration_pairs": 80,
+  "diablo_fits": 80,
+  "method_records": 560,
+  "diagnostic_flags": 0,
+  "word_pages": 14,
+  "eqtl_calibration": "Negative-control excesses observed; neither ordinary F nor HC3 certified for confirmatory use without further calibration."
+}

@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "samples": 240,
+  "genotype_variants": 24,
+  "RNA_genes": 12,
+  "genotype_call_rate": 1.0,
+  "minimum_MAF": 0.14166666666666666,
+  "genotype_values_valid": true,
+  "finite_RNA": true,
+  "nonnegative_integer_counts": true,
+  "positive_libraries": true,
+  "TNBC": 79,
+  "non_TNBC": 161,
+  "protein_features": 0,
+  "somatic_features": 0,
+  "synthetic_ancestry_counts": [
+    125,
+    71,
+    44
+  ],
+  "hwe_reliable_cells": 39,
+  "hwe_policy": "Pearson approximation only where all expected genotype counts >=5, within ancestry; descriptive, no phenotype-dependent filtering; no real genotype QC validation implied."
+}

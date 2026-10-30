@@ -1,0 +1,11 @@
+test_bh_known_values (test_science.Science.test_bh_known_values) ... ok
+test_nested_invariance (test_science.Science.test_nested_invariance) ... ok
+test_official_mofa_and_projection (test_science.Science.test_official_mofa_and_projection) ... ok
+test_replay_and_layers (test_science.Science.test_replay_and_layers) ... ok
+test_training_preparation (test_science.Science.test_training_preparation) ... ok
+test_truth_and_sign (test_science.Science.test_truth_and_sign) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.250s
+
+OK

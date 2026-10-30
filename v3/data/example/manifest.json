@@ -1,0 +1,13 @@
+{
+  "disclosure": "Entirely synthetic breast cancer cases, genomic positions and gene IDs. Not real breast cancer susceptibility or eQTL findings.",
+  "seed": 805240000,
+  "scenario": "subtype_eqtl",
+  "samples": 240,
+  "views": [
+    "genotype",
+    "RNA"
+  ],
+  "RNA_units": "log2 CPM plus one using known simulated whole-assay library",
+  "genotype_units": "0/1/2 alternate allele dosage",
+  "case_only": true
+}

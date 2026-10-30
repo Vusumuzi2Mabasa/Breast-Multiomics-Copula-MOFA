@@ -1,0 +1,10 @@
+{
+  "sha256": {
+    "protocol/design.json": "11b6c7a628a366ff08d62be51b085a2d726d7b4350abcc83caad8e2276b5d82c",
+    "src/simulation.py": "df63d64409c32814eca6ebaf0b6eb3d3229bab2e3cee5989e3dcc899d404d739",
+    "src/eqtl.py": "e9d95b57a3604bbd80516da8c81cb00d2dc5670ed4208803adfb66c9932bc7f2",
+    "src/integration.py": "12c3b40e47bec6d7f1f9e1880b634e630ff9e8607efc78e7332bbe7ccf830456",
+    "src/run.py": "0dd95cc4adce547213655b978ded011326e5bb6ad28139b45ffc009d7de3ab1a",
+    "src/diablo.R": "08fe6d2ea3448e67d404f93d4b3e7a8856174940dae234b0b76affbe15909960"
+  }
+}

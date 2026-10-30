@@ -3,3 +3,4 @@ v2/work/
 __pycache__/
 *.pyc
 .venv/
+v3/work/

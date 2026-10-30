@@ -1,0 +1,15 @@
+{
+  "reason": "The preserved primary F analysis showed 0.110 empirical FDR in the abundance-only N480 omnibus cell. Add HC3 covariance sensitivity without replacing primary results, and 800 fresh null/abundance-only cohorts, using fixed new seeds before inspecting them.",
+  "source_sha256": "702a9218ed8aeffbc9d117a4adcd16e5a524ac6cf92513d3a60a03d0b22b4fc1",
+  "method": "HC3 Wald F using residual df n-rank and the same full gene model; BH separately across twelve genes per family. Approximate reference, not guaranteed calibration.",
+  "fresh_scenarios": [
+    "null",
+    "abundance_only"
+  ],
+  "fresh_replicates_per_cell": 200,
+  "fresh_sample_sizes": [
+    240,
+    480
+  ],
+  "fresh_seed": 1003000000
+}

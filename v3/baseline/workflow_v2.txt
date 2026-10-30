@@ -1,0 +1,183 @@
+STUDY 3 CROSS OMICS COORDINATION AND INTEGRATION
+Author: Vusumuzi Mabasa
+Project: D:/Breast_Multiomics_Copula_MOFA
+Repository: https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA
+
+1. SCOPE AND PRESERVATION
+All observations are synthetic. No TACA, Clin-MAP, patient or controlled-access
+information is used. The experiment evaluates conditional RNA-protein
+coordination, molecular integration and supervised prediction as separate tasks.
+The original study is preserved at commit c56089d384bc3b447c2d6f4601c8ccdf5cd1e28c.
+Original numerical sources, results, figures and the original Word report remain
+in place. baseline/ contains the original README, workflow, checksum manifest
+and preservation index. New scientific work is in v2/.
+
+2. SYNTHETIC BIOLOGY
+Four prespecified modules each contain four matched RNA/protein pairs.
+Views: 8 germline dosages, 8 somatic indicators, 16 RNA and 16 proteins.
+Genotypes have illustrative LD and country-dependent allele frequencies.
+This is not empirical African LD. Somatic indicators are separate inputs.
+Cis genomic effects, selected opposing protein effects, shared module variation,
+clinical covariates, library size, technical shifts and protein detection are
+represented. The gene identifiers are synthetic, not real gene annotations.
+RNA: NB quantile measurements with optional scale perturbation; log2(CPM+1).
+Protein: log abundance. Missing proteins are abundance-dependent in selected
+mechanisms. The generator's equations define truth, not a causal clinical claim.
+
+3. PRIMARY DEPENDENCE EXPERIMENT
+N=240 and 480. All pairs adjust marginal locations for subtype, clinical terms,
+mapped genotype/somatic indicators and specified interactions. Location/scale
+preparation uses twofold cross-fitting. Dependence statistics use complete pairs.
+Methods: partial Pearson, partial Spearman, normal-score differential correlation,
+HC3 product regression, conditional Gaussian copula score, and latent-margin oracle.
+The working dependence model is atanh(rho)=D*gamma+beta*TNBC; test beta=0.
+Generating and observed-pair coefficients may differ under MNAR selection.
+
+Calibration: 500 cohorts x 5 null mechanisms x 2 N = 5000 cohorts.
+Null evaluation: 300 x 5 x 2 = 3000 cohorts.
+Alternative evaluation: 200 x 5 x 2 = 2000 cohorts.
+Out-of-bank heavy-tail stress: 200 x 2 x 2 = 800 cohorts.
+Total fresh evaluation: 5800; 34800 evaluation method records.
+Gene family: maximum Q across 16 pairs.
+Module family: maximum sum(Q) across four prespecified four-gene modules.
+Each method/N/family uses strict rank 476/500 within each null bank, then the
+largest cutoff across banks. Averaged included-bank rejection bound: 25/501.
+Thresholds are frozen before evaluation. The two families have separate control;
+there is no joint 5% guarantee or general FDR claim. Report realised rejection,
+Wilson intervals and calibration-aware paired bootstrap contrasts.
+
+4. FAIRER INTEGRATION EXPERIMENT
+Four mechanisms x 2 N x 12 replicates = 96 independent replicates.
+Training excludes synthetic country 5. Independent test sets have 240 represented-
+country participants and 120 participants from the excluded country.
+Official MOFA+ is evaluated with mixed likelihoods and rank-transformed Gaussian
+inputs. Training-only masked RNA/protein reconstruction selects K in 2,4,6,10.
+The factor grid was extended prospectively after the pilot selected its boundary.
+Starts: official PCA, and PCA plus fixed N(0,0.25^2) jitter in the variational
+factor means. Initialisation hashes prove distinct starts. Select by training ELBO.
+The initial seed-only PCA reruns are preserved in v2/provisional_pca and excluded
+from final evaluation. Active integration source lock: integration_lock_r2.json.
+Matched Gaussian and copula Gibbs samplers use identical priors and K selected by
+raw MOFA. Both have 2 chains, 600 burn-in, 900 subsequent iterations, thinning 3.
+Monitored split Rhat >=1.1 triggers one threefold extension; keep unresolved flags.
+Rank PCA, covariates and true module factors are additional references.
+The true factors are a capture oracle, not a classifier upper bound.
+Ridge logistic classifiers use the same clinical inputs and penalty C=1.
+Protein-view prediction masks all proteins for score inference in both train/test,
+then fits common ridge predictors. Errors use observed standardised test proteins.
+The covariate-only protein baseline uses the same fitted preparation.
+
+5. OFFICIAL R DIABLO
+R mixOmics block.splsda uses four molecular blocks plus a clinical/technical block.
+Threefold internal validation chooses 1 or 2 components and keepX=4 or 8 per block.
+Technical preparation and mean imputation are fitted within each training fold.
+Official weighted-centroid votes supply class labels. Report balanced accuracy,
+not an AUC fabricated from hard labels. Independent seen/unseen outcomes match
+those used for all other integration workflows. Warnings and failures are retained.
+
+6. WINDOWS AND TOSHIBA ENVIRONMENT
+Use Python 3.12, R with mixOmics/jsonlite and Quarto. Existing installed packages
+can be reused. requirements.txt records Python versions. Tested R package versions
+are recorded in the results metadata; retain those versions for close reproduction.
+
+Set-Location 'D:\Breast_Multiomics_Copula_MOFA'
+py -3.12 -m venv .venv
+& .\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+$env:OPENBLAS_NUM_THREADS='1'
+$env:OMP_NUM_THREADS='1'
+$env:MKL_NUM_THREADS='1'
+Rscript --vanilla -e "stopifnot(requireNamespace('mixOmics'),requireNamespace('jsonlite'))"
+quarto --version
+
+If missing, install mixOmics using the official Bioconductor instructions appropriate
+to the R release. Do not change a working package environment unnecessarily.
+The executed Toshiba run reused the bundled Python runtime and task-local packages
+at D:/Breast_Multiomics_Copula_MOFA/work/runtime. Nothing requires a Linux cluster.
+
+7. COMPLETE FRESH REPRODUCTION
+Use a NEW output path. The wrapper refuses existing targets and never deletes results.
+
+python v2/src/reproduce.py --output 'D:\Breast_Multiomics_Study3_fresh' --workers 2 --rscript 'C:\Program Files\R\R-4.5.1\bin\Rscript.exe' --quarto 'C:\Program Files\RStudio\resources\app\bin\quarto\bin\quarto.exe'
+
+On Linux/WSL, after installing dependencies and activating the environment:
+
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+python v2/src/reproduce.py --output /mnt/d/Breast_Multiomics_Study3_fresh --workers 2
+
+Confirm the actual Toshiba mount. WSL commonly uses /mnt/d; an HPC filesystem does
+not automatically expose that drive. Full repeated simulations take sustained CPU
+time despite the small panels. The full benchmark was run locally on Toshiba.
+
+8. RESUMABLE INDIVIDUAL STAGES
+python -m unittest discover -s tests -v
+python -m unittest discover -s v2/tests -v
+python v2/src/run_dependence.py --workers 2
+python v2/src/run_integration.py --workers 2
+Rscript --vanilla v2/src/diablo.R .
+python v2/src/validate.py
+Rscript --vanilla v2/src/check_conditional.R .
+python v2/src/validate_integration.py
+Rscript --vanilla v2/src/check_integration.R .
+python v2/src/export_example.py
+python v2/src/analysis.py
+python v2/src/figures.py
+python v2/src/manuscript.py
+python v2/src/build_word.py
+python v2/src/audit.py
+
+Existing chunks/replicate records are resumed. Use a separate fresh directory for
+new full runs. Source locks refuse silent numerical-source changes. A fresh
+scientific reproduction uses audit.py --fresh; publication additionally requires
+human visual review of the new Word rendering and a new release manifest.
+
+9. VALIDATION
+The tests check analytic gradients, symmetry, direction reversal, allele-coding
+invariance, removal of additive subtype shifts by conditional margins, distinct
+MOFA starts, training preparation, country exclusion and rank-sampler invariance.
+Five dependence datasets are deterministically replayed. R independently optimises
+ten conditional likelihood fixtures using numerical derivatives. Family-rank
+calculations are reconstructed separately. All integration initialisations,
+selected budgets and prediction metrics are checked; one complete integration
+replicate is replayed. R independently checks held-out metrics; Python checks all
+DIABLO class-prediction arithmetic against released outcomes.
+
+10. OUTPUTS AND INTERPRETATION
+v2/results/dependence_summary.csv: false-module/gene and detection results.
+v2/results/dependence_contrasts.csv: paired calibration-aware contrasts.
+v2/results/integration_summary.csv: predictive and recovery metrics.
+v2/results/integration_tuning.csv: factor-grid and validation records.
+v2/results/diablo_evaluation.csv: supervised class-prediction results.
+v2/results/validation/: independent checks and replay evidence.
+v2/data/example/: independent small dataset, library sizes and feature map.
+v2/figures/: seven main publication figures in PNG/SVG.
+v2/report/Study3_Coordination_Report_v2.docx: research Word report.
+v2/report/manuscript.qmd: Quarto source with editable equations.
+README.md: shared research manuscript with figures/tables displayed on GitHub.
+
+Copula detection and integration classification answer different questions.
+Do not interpret association as regulation, tumour origin or shared causal alleles.
+The generative link is favourable to the specified conditional copula; simple
+alternatives use different functional forms. Unknown confounding, assay biology,
+real-data dimensionality and unknown detection mechanisms need further work.
+Held-out countries are synthetic and do not constitute clinical external validation.
+Use independent confirmation data for modules selected from real Study 3 outcomes.
+
+11. WORD REPORT
+The README and Quarto report share scientific text, mathematical methods and
+numerical tables. Interpretations precede figures. Author: Vusumuzi Mabasa.
+The new report is versioned under v2; the original report is preserved byte-for-byte.
+Quarto and python-docx produce editable Word equations and native tables.
+All release pages are rendered and visually inspected; QA images/PDF stay in work/.
+
+12. GITHUB
+The repository already exists. After inspecting a new release:
+
+git add .
+git commit -m "Extend Study 3 coordination simulations and research report"
+git push origin main
+
+Do not upload work/, installed dependencies, credentials, clinical data or proposal
+files. GitHub CI checks numerical units, both release audits and integrity hashes.
+To reproduce the original experiment, use a separate checkout of its preserved
+commit rather than overwriting the current Study 3 README or report.

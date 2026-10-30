@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "pages": 14,
+  "author": "Vusumuzi Mabasa",
+  "figures": 7,
+  "tables": 7,
+  "table_rows": [
+    6,
+    8,
+    5,
+    5,
+    9,
+    5,
+    13
+  ],
+  "editable_equations": 18,
+  "word_sha256": "854360b456ec5eba001bf46d2758da54eab8016a326ba3869b458aebcaac3f4e",
+  "readme_sha256": "e0d91e58f4c97270ba5954b420bf21e29ac2f9519d0a45f52aae13c0d554a59e",
+  "page_sha256": {
+    "page-1.png": "441d7a2a9346acc8e5cbfce24049e6ed8c869e859347c9494a81c99b70786f8e",
+    "page-2.png": "836356414fc86df0421736f74b6dcec768be945f24f826aa92bb2d40411ac204",
+    "page-3.png": "715864fbbdad6bdf9083e3fdbfc35ca0c358335d9a9281b4541f45219690dba5",
+    "page-4.png": "71de1792ce4b303c75b9aaf799a38c27c36467d011196e18f991e9363b412046",
+    "page-5.png": "6dfe8aae59eddc4f31a99567c0bcdb2de48f54608fe3ddbceea674a26f16b05d",
+    "page-6.png": "63e8ee4e4fad0e2a3f9cfea6a8a7ad5b96329c8c402476613a6422676a4986f3",
+    "page-7.png": "94d82aa7567fbb2fafd956bfd5ea2c53672bd56e5c65e03a81ad15376bec46c4",
+    "page-8.png": "1a260f32a49f3d4726091c4cb71838f754c9b7b5454924e1ea4ec3a7cba19f1e",
+    "page-9.png": "d24aa3111f66feb721edaf946ab3fb6eb36f9ed576e6934614d3d991db9254ac",
+    "page-10.png": "b32798058e5a903d665f69ecec0851d438e4219f5fde16732ee6a7ff37b71741",
+    "page-11.png": "1c12b6d900c42050103035e0e43f8374bab76f2b34633788451d81c9a83c53ed",
+    "page-12.png": "14e0e5299433f1160330c89f1bbc13f9a1586d896d3ee4503cb85b04d5a9bfcf",
+    "page-13.png": "5862d1b10be8065ba43f7372dee1158d45b80a5db4fcbcc278e951deba8cc65e",
+    "page-14.png": "ed367e4859bf3b1fc87c0993ce4311f000fba05d290fd763efab5e61d6c66653"
+  },
+  "visual_review": "All fourteen final rendered pages reviewed; unchanged pages verified byte-identical to reviewed prior rendering. Native equations, seven tables, seven figures and captions readable; no clipping or overlap. Author and synthetic-data disclosure present."
+}

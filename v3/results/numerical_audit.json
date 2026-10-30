@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "eqtl_cohorts": 1600,
+  "eqtl_gene_records": 19200,
+  "integration_cohorts": 80,
+  "integration_method_records": 560,
+  "diagnostic_flags": 0,
+  "failures": [],
+  "replayed_eqtl_cohorts": 8,
+  "checked_probability_records": 48
+}

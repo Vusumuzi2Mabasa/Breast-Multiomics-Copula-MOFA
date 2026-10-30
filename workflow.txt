@@ -1,183 +1,194 @@
-STUDY 3 CROSS OMICS COORDINATION AND INTEGRATION
+GENOTYPE AND RNA INTEGRATION AND CIS eQTL MAPPING
 Author: Vusumuzi Mabasa
-Project: D:/Breast_Multiomics_Copula_MOFA
-Repository: https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA
+Location: D:/Breast_Multiomics_Copula_MOFA on TOSHIBA EXT
+Public repository: https://github.com/Vusumuzi2Mabasa/Breast-Multiomics-Copula-MOFA
 
-1. SCOPE AND PRESERVATION
-All observations are synthetic. No TACA, Clin-MAP, patient or controlled-access
-information is used. The experiment evaluates conditional RNA-protein
-coordination, molecular integration and supervised prediction as separate tasks.
-The original study is preserved at commit c56089d384bc3b447c2d6f4601c8ccdf5cd1e28c.
-Original numerical sources, results, figures and the original Word report remain
-in place. baseline/ contains the original README, workflow, checksum manifest
-and preservation index. New scientific work is in v2/.
+1. SCOPE
+All data, gene IDs, genomic positions, LD and TNBC labels are synthetic.
+The current v3 experiment includes germline genotype and RNA only. There are
+no protein measurements, somatic mutation features or copula models in v3.
+The previous v1 and v2 experiments remain preserved. Their READMEs and
+workflows are archived under baseline/ and v3/baseline/, respectively.
+This is a case-only TNBC versus non-TNBC illustration, not susceptibility GWAS,
+real breast cancer eQTL discovery or a clinical biomarker validation study.
 
-2. SYNTHETIC BIOLOGY
-Four prespecified modules each contain four matched RNA/protein pairs.
-Views: 8 germline dosages, 8 somatic indicators, 16 RNA and 16 proteins.
-Genotypes have illustrative LD and country-dependent allele frequencies.
-This is not empirical African LD. Somatic indicators are separate inputs.
-Cis genomic effects, selected opposing protein effects, shared module variation,
-clinical covariates, library size, technical shifts and protein detection are
-represented. The gene identifiers are synthetic, not real gene annotations.
-RNA: NB quantile measurements with optional scale perturbation; log2(CPM+1).
-Protein: log abundance. Missing proteins are abundance-dependent in selected
-mechanisms. The generator's equations define truth, not a causal clinical claim.
+2. DESIGN
+24 genotype dosages in six correlated four-variant regions and 12 mapped RNA
+genes. Two training sizes, 240 and 480. Four scenarios: null, shared eQTL,
+subtype eQTL with RNA abundance shifts, and abundance-only without eQTLs.
+200 eQTL replicates per cell: 1,600 cohorts. Ten integration replicates per
+cell: 80 independent training/test pairs, each with 360 separate test cases.
+Dedicated pilot seeds are excluded from the evaluation banks. Source hashes
+were frozen before evaluation; seeds and effect sizes are not selected for
+favourable results. See v3/protocol/design.json and source_lock.json.
 
-3. PRIMARY DEPENDENCE EXPERIMENT
-N=240 and 480. All pairs adjust marginal locations for subtype, clinical terms,
-mapped genotype/somatic indicators and specified interactions. Location/scale
-preparation uses twofold cross-fitting. Dependence statistics use complete pairs.
-Methods: partial Pearson, partial Spearman, normal-score differential correlation,
-HC3 product regression, conditional Gaussian copula score, and latent-margin oracle.
-The working dependence model is atanh(rho)=D*gamma+beta*TNBC; test beta=0.
-Generating and observed-pair coefficients may differ under MNAR selection.
+3. DATA GENERATION
+v3/src/simulation.py generates synthetic ancestry, age, cell fraction, batch,
+genotype and case subtype. Local latent Gaussian correlation is 0.65^distance;
+inverse binomial thresholds give dosage 0/1/2. This is synthetic LD, not a
+public African reference. RNA latent log2 abundance has cis genotype effects,
+subtype effects, genotype-by-subtype effects, three shared residual programmes
+and noise. Negative-binomial counts have dispersion 30 and a known simulated
+whole-assay library. Analysis uses log2(CPM+1), not counts divided by the sum
+of only twelve panel genes. All equations are in the README and Word report.
 
-Calibration: 500 cohorts x 5 null mechanisms x 2 N = 5000 cohorts.
-Null evaluation: 300 x 5 x 2 = 3000 cohorts.
-Alternative evaluation: 200 x 5 x 2 = 2000 cohorts.
-Out-of-bank heavy-tail stress: 200 x 2 x 2 = 800 cohorts.
-Total fresh evaluation: 5800; 34800 evaluation method records.
-Gene family: maximum Q across 16 pairs.
-Module family: maximum sum(Q) across four prespecified four-gene modules.
-Each method/N/family uses strict rank 476/500 within each null bank, then the
-largest cutoff across banks. Averaged included-bank rejection bound: 25/501.
-Thresholds are frozen before evaluation. The two families have separate control;
-there is no joint 5% guarantee or general FDR claim. Report realised rejection,
-Wilson intervals and calibration-aware paired bootstrap contrasts.
+4. MOFA AND DIABLO
+Official mofapy2 engine, two Gaussian working views: standardised genotype
+and RNA. Ancestry and batch adjustment and scaling are fitted using training
+participants only, with no subtype labels in MOFA representation learning.
+K=2/4/6 is selected by 15% masked genotype/RNA reconstruction, equally weighted
+by view. Masked values are excluded from preprocessing estimates. Two genuine
+starts (PCA and jittered PCA) are selected by training ELBO. Refitted MOFA
+scores enter a fixed C=1 ridge logistic classifier plus observed clinical inputs.
 
-4. FAIRER INTEGRATION EXPERIMENT
-Four mechanisms x 2 N x 12 replicates = 96 independent replicates.
-Training excludes synthetic country 5. Independent test sets have 240 represented-
-country participants and 120 participants from the excluded country.
-Official MOFA+ is evaluated with mixed likelihoods and rank-transformed Gaussian
-inputs. Training-only masked RNA/protein reconstruction selects K in 2,4,6,10.
-The factor grid was extended prospectively after the pilot selected its boundary.
-Starts: official PCA, and PCA plus fixed N(0,0.25^2) jitter in the variational
-factor means. Initialisation hashes prove distinct starts. Select by training ELBO.
-The initial seed-only PCA reruns are preserved in v2/provisional_pca and excluded
-from final evaluation. Active integration source lock: integration_lock_r2.json.
-Matched Gaussian and copula Gibbs samplers use identical priors and K selected by
-raw MOFA. Both have 2 chains, 600 burn-in, 900 subsequent iterations, thinning 3.
-Monitored split Rhat >=1.1 triggers one threefold extension; keep unresolved flags.
-Rank PCA, covariates and true module factors are additional references.
-The true factors are a capture oracle, not a classifier upper bound.
-Ridge logistic classifiers use the same clinical inputs and penalty C=1.
-Protein-view prediction masks all proteins for score inference in both train/test,
-then fits common ridge predictors. Errors use observed standardised test proteins.
-The covariate-only protein baseline uses the same fitted preparation.
+Official R mixOmics block.splsda fits genotype/RNA molecular blocks plus a
+clinical-input block. Threefold stratified training validation selects one or
+two components and keepX four or eight. Preparation is repeated within each
+fold. The additional clinical inputs provide the same information supplied
+to MOFA's ridge classifier; they are not a third molecular assay. Official
+weighted-centroid voting gives class labels. DIABLO is compared by balanced
+accuracy, not artificial ROC scores from hard classifications.
 
-5. OFFICIAL R DIABLO
-R mixOmics block.splsda uses four molecular blocks plus a clinical/technical block.
-Threefold internal validation chooses 1 or 2 components and keepX=4 or 8 per block.
-Technical preparation and mean imputation are fitted within each training fold.
-Official weighted-centroid votes supply class labels. Report balanced accuracy,
-not an AUC fabricated from hard labels. Independent seen/unseen outcomes match
-those used for all other integration workflows. Warnings and failures are retained.
+PCA, genotype-only ridge, RNA-only ridge, combined ridge and clinical-only
+ridge are included. All workflows use identical independent test participants.
+Convergence flags remain visible and are not silently excluded. Ten replicates
+per cell provide limited precision; these are workflow comparisons, not proof
+of general algorithm superiority or transport to a new clinical cohort.
 
-6. WINDOWS AND TOSHIBA ENVIRONMENT
-Use Python 3.12, R with mixOmics/jsonlite and Quarto. Existing installed packages
-can be reused. requirements.txt records Python versions. Tested R package versions
-are recorded in the results metadata; retain those versions for close reproduction.
+5. CIS eQTL MAPPING
+For each gene, jointly fit its four local genotypes and their interactions
+with subtype, adjusting for age, cell fraction, synthetic ancestry and batch.
+The omnibus test compares full versus covariate-plus-subtype models (eight
+additional coefficients where full rank). The interaction test compares full
+versus common-genotype models (four additional coefficients). Observed design
+ranks determine F-test degrees of freedom. Linear tests on transformed counts
+use a working Gaussian reference; repeated null scenarios assess realised error.
+
+Apply BH separately across twelve genes for each family within each cohort.
+No joint FDR guarantee across the two families is claimed. Evaluate sensitivity
+against gene-level truth and mean false discovery proportions, including zero
+when no genes are selected. LD tag associations are not labelled false causal
+variants. SNP-level example associations are nominal illustrations, not a
+fine-mapping analysis. No colocalisation, mediation, causal discovery or pQTL
+analysis was performed. Subtype interactions require direct interaction tests;
+significance in one subtype only is insufficient.
+
+6. QUALITY CHECKS AND EXAMPLE
+v3/data/example contains 240 prespecified subtype-eQTL cases, genotype/RNA/count
+matrices, metadata, covariates, libraries, synthetic positions and truth tables.
+QC checks dimensions, finite values, valid dosages, positive libraries,
+nonnegative integer counts and minor allele frequency. HWE summaries are within
+ancestry and use a Pearson approximation only when all expected counts >=5.
+These checks do not replace real genotype, RNA-seq, relatedness or imputation QC.
+There is no FASTQ processing or actual genomic coordinate annotation here.
+
+7. SOFTWARE AND TOSHIBA
+Confirm the actual drive letter and open a terminal in this repository:
 
 Set-Location 'D:\Breast_Multiomics_Copula_MOFA'
-py -3.12 -m venv .venv
-& .\.venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+Rscript --vanilla -e "library(mixOmics);library(jsonlite);sessionInfo()"
+quarto --version
 $env:OPENBLAS_NUM_THREADS='1'
 $env:OMP_NUM_THREADS='1'
 $env:MKL_NUM_THREADS='1'
-Rscript --vanilla -e "stopifnot(requireNamespace('mixOmics'),requireNamespace('jsonlite'))"
-quarto --version
 
-If missing, install mixOmics using the official Bioconductor instructions appropriate
-to the R release. Do not change a working package environment unnecessarily.
-The executed Toshiba run reused the bundled Python runtime and task-local packages
-at D:/Breast_Multiomics_Copula_MOFA/work/runtime. Nothing requires a Linux cluster.
+R, mixOmics, jsonlite and Quarto must already be installed or installed using
+their official instructions. The executed Toshiba run reused an existing
+bundled Python runtime and scientific dependencies at work/runtime. The local
+R and Quarto executable paths are supplied explicitly below where needed.
+No Linux HPC or cluster account is necessary for these manageable panels.
 
-7. COMPLETE FRESH REPRODUCTION
-Use a NEW output path. The wrapper refuses existing targets and never deletes results.
+8. COMPLETE FRESH REPRODUCTION
+The wrapper refuses an existing destination and never deletes released results.
 
-python v2/src/reproduce.py --output 'D:\Breast_Multiomics_Study3_fresh' --workers 2 --rscript 'C:\Program Files\R\R-4.5.1\bin\Rscript.exe' --quarto 'C:\Program Files\RStudio\resources\app\bin\quarto\bin\quarto.exe'
+python v3/src/reproduce.py --output 'D:\Breast_Genotype_RNA_fresh' --workers 2 --rscript 'C:\Program Files\R\R-4.5.1\bin\Rscript.exe' --quarto 'C:\Program Files\RStudio\resources\app\bin\quarto\bin\quarto.exe'
 
-On Linux/WSL, after installing dependencies and activating the environment:
+Linux/WSL, after activating an environment with the requirements:
 
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
-python v2/src/reproduce.py --output /mnt/d/Breast_Multiomics_Study3_fresh --workers 2
+python v3/src/reproduce.py --output /mnt/d/Breast_Genotype_RNA_fresh --workers 2
 
-Confirm the actual Toshiba mount. WSL commonly uses /mnt/d; an HPC filesystem does
-not automatically expose that drive. Full repeated simulations take sustained CPU
-time despite the small panels. The full benchmark was run locally on Toshiba.
+Confirm the Toshiba mount; WSL commonly uses /mnt/d. A remote cluster cannot
+automatically access the drive. Full repeats take longer than one small panel.
 
-8. RESUMABLE INDIVIDUAL STAGES
-python -m unittest discover -s tests -v
-python -m unittest discover -s v2/tests -v
-python v2/src/run_dependence.py --workers 2
-python v2/src/run_integration.py --workers 2
-Rscript --vanilla v2/src/diablo.R .
-python v2/src/validate.py
-Rscript --vanilla v2/src/check_conditional.R .
-python v2/src/validate_integration.py
-Rscript --vanilla v2/src/check_integration.R .
-python v2/src/export_example.py
-python v2/src/analysis.py
-python v2/src/figures.py
-python v2/src/manuscript.py
-python v2/src/build_word.py
-python v2/src/audit.py
+9. RESUMABLE STAGES
+python -m unittest discover -s v3/tests -v
+python v3/src/run.py --stage eqtl --workers 2
+python v3/src/run.py --stage integration --workers 2
+Rscript --vanilla v3/src/diablo.R .
+python v3/src/replay_integration.py
+python v3/src/analysis.py
+Rscript --vanilla v3/src/check_R.R .
+python v3/src/robustness.py
+Rscript --vanilla v3/src/check_HC3.R .
+python v3/src/figures.py
+python v3/src/manuscript.py
+python v3/src/build_word.py
+python v3/src/audit.py --fresh
 
-Existing chunks/replicate records are resumed. Use a separate fresh directory for
-new full runs. Source locks refuse silent numerical-source changes. A fresh
-scientific reproduction uses audit.py --fresh; publication additionally requires
-human visual review of the new Word rendering and a new release manifest.
+Existing replicate records are resumed. Scientific source locks reject silent
+source changes. A fresh scientific audit skips earlier-release preservation and
+human visual QA, which must be repeated before publishing a newly built report.
 
-9. VALIDATION
-The tests check analytic gradients, symmetry, direction reversal, allele-coding
-invariance, removal of additive subtype shifts by conditional margins, distinct
-MOFA starts, training preparation, country exclusion and rank-sampler invariance.
-Five dependence datasets are deterministically replayed. R independently optimises
-ten conditional likelihood fixtures using numerical derivatives. Family-rank
-calculations are reconstructed separately. All integration initialisations,
-selected budgets and prediction metrics are checked; one complete integration
-replicate is replayed. R independently checks held-out metrics; Python checks all
-DIABLO class-prediction arithmetic against released outcomes.
+10. VALIDATION
+Six unit tests check deterministic replay, the two data layers, BH known values,
+F-test scale invariance, planted interaction signs, train-only preparation and
+official MOFA projection with distinct initialisations. Eight complete eQTL
+cohorts and one full integration replicate are replayed. Independent R QR calculations check all twelve genes in
+eight fixtures, their two test families and BH arithmetic. R independently
+checks AUC, balanced accuracy and Brier for all methods in the first integration
+replicate of every scenario/size cell. Python recomputes probability metrics
+for all 480 ridge/projection method records and verifies every DIABLO voted-class
+metric against the common independent test outcomes. Every selected factor
+budget and every pair of initialisation hashes are checked. Prior releases are
+verified byte-for-byte. Word pages are rendered and visually inspected before
+release; QA images and internal PDFs remain in the ignored work directory.
 
-10. OUTPUTS AND INTERPRETATION
-v2/results/dependence_summary.csv: false-module/gene and detection results.
-v2/results/dependence_contrasts.csv: paired calibration-aware contrasts.
-v2/results/integration_summary.csv: predictive and recovery metrics.
-v2/results/integration_tuning.csv: factor-grid and validation records.
-v2/results/diablo_evaluation.csv: supervised class-prediction results.
-v2/results/validation/: independent checks and replay evidence.
-v2/data/example/: independent small dataset, library sizes and feature map.
-v2/figures/: seven main publication figures in PNG/SVG.
-v2/report/Study3_Coordination_Report_v2.docx: research Word report.
-v2/report/manuscript.qmd: Quarto source with editable equations.
-README.md: shared research manuscript with figures/tables displayed on GitHub.
+11. OUTPUTS
+v3/results/eqtl/: all 1,600 cohort records with gene-level tests and truth.
+v3/results/integration/: 80 MOFA/baseline records and selected model fixtures.
+v3/results/diablo/: 80 official supervised fits, tuning and class predictions.
+v3/results/eqtl_summary.csv: detection and realised FDR summaries.
+v3/results/integration_summary.csv: full method performance and diagnostics.
+v3/results/example_eqtl.csv: all twelve prespecified example genes.
+v3/results/example_QC.json and example_HWE.csv: example quality summaries.
+v3/results/R_validation.json: independent numerical validation.
+v3/figures/: seven main figures as PNG/SVG.
+v3/report/Genotype_RNA_eQTL_Report.docx: research Word report.
+v3/report/manuscript.qmd: shared Quarto manuscript.
+README.md: research paper with interpretations before figures and visible tables.
 
-Copula detection and integration classification answer different questions.
-Do not interpret association as regulation, tumour origin or shared causal alleles.
-The generative link is favourable to the specified conditional copula; simple
-alternatives use different functional forms. Unknown confounding, assay biology,
-real-data dimensionality and unknown detection mechanisms need further work.
-Held-out countries are synthetic and do not constitute clinical external validation.
-Use independent confirmation data for modules selected from real Study 3 outcomes.
+The preserved abundance-only N480 ordinary-F omnibus control yielded 11%
+false discoveries. A disclosed amendment added HC3 sensitivity and 800 fresh
+null/abundance-only cohorts without replacing original results. The original
+HC3 cell remained elevated at 8%; fresh ordinary-F and HC3 cells were 5.5%
+and 4.5%. HC3 also rejected in 8.5% and 9% of fresh complete-null
+cohorts at N240 and N480. Neither reference is certified for confirmatory use
+without further calibration. These do not establish universal error control. Additional HC3
+checks were independently validated in R. See robustness_summary.csv and
+protocol/robustness_amendment.json.
 
-11. WORD REPORT
-The README and Quarto report share scientific text, mathematical methods and
-numerical tables. Interpretations precede figures. Author: Vusumuzi Mabasa.
-The new report is versioned under v2; the original report is preserved byte-for-byte.
-Quarto and python-docx produce editable Word equations and native tables.
-All release pages are rendered and visually inspected; QA images/PDF stay in work/.
+12. LIMITATIONS AND REAL STUDY TRANSITION
+Synthetic LD and idealised covariates do not establish validity in an African
+clinical cohort. The small gene family and strong effects do not provide a
+transcriptome-wide power calculation. The subtype-eQTL scenario also changes
+RNA abundance, so prediction cannot isolate interaction effects. Real Study 3
+needs assay confirmation, ancestry/relatedness adjustment, expression QC,
+clinical covariates, adequate interaction power and independent replication.
+Blood findings do not establish tumour origin. Real colocalisation would require
+harmonised external GWAS/eQTL statistics and suitable LD; none is substituted
+by these simulated results.
 
-12. GITHUB
-The repository already exists. After inspecting a new release:
+13. GITHUB
+Inspect numerical audits and rendered report, regenerate the release manifest,
+then publish the reviewed release:
 
 git add .
-git commit -m "Extend Study 3 coordination simulations and research report"
+git commit -m "Add genotype RNA integration and breast cancer eQTL simulation"
 git push origin main
 
-Do not upload work/, installed dependencies, credentials, clinical data or proposal
-files. GitHub CI checks numerical units, both release audits and integrity hashes.
-To reproduce the original experiment, use a separate checkout of its preserved
-commit rather than overwriting the current Study 3 README or report.
+Do not upload work/, credentials, installed dependencies, proposal documents or
+clinical data. CI checks all three experiments' tests and integrity audits.

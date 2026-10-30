@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "original_cohorts": 1600,
+  "fresh_cohorts": 800,
+  "method_family_records": 9600,
+  "fresh_seed_disjoint": true
+}

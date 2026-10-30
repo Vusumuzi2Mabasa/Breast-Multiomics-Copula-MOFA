@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "gene_model_fixtures": 96,
+  "max_qtl_p_or_q_error": 5.0404125317982107e-14,
+  "metric_fixtures": 48,
+  "max_metric_error": 1.1102230246251565e-16,
+  "R": "4.5.1"
+}
